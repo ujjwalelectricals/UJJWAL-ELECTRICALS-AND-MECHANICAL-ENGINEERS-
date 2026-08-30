@@ -11,14 +11,13 @@ const collections = [
 const normalize = (value = '') => value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
 function mapProduct(product, category) {
-  const title = normalize(product.title);
   const variants = Array.isArray(product.variants) ? product.variants : [];
   const priced = variants.find((variant) => Number(variant.price) > 0) || variants[0];
   const images = Array.from(new Set((product.images || []).map((image) => image.src).filter(Boolean)));
   return {
     id: `${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${product.id}`,
-    name: title,
-    brand: product.vendor || 'JAIBROS',
+    name: normalize(product.title),
+    brand: normalize(product.vendor || 'JAIBROS'),
     price: priced ? Number(priced.price) : 0,
     category,
     image: images[0] || '',
@@ -57,6 +56,6 @@ if (products.length < 5) {
   throw new Error('Jaibros sync returned too few products; refusing to overwrite the catalog.');
 }
 
-await mkdir('src/data', { recursive: true });
-await writeFile('src/data/jaibros-products.json', JSON.stringify({ syncedAt: new Date().toISOString(), products }, null, 2));
-console.log(`Saved ${products.length} Jaibros products to src/data/jaibros-products.json`);
+await mkdir('public', { recursive: true });
+await writeFile('public/jaibros-products.json', JSON.stringify({ syncedAt: new Date().toISOString(), products }, null, 2));
+console.log(`Saved ${products.length} Jaibros products to public/jaibros-products.json`);
