@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import IndustrialScene from './IndustrialScene';
 import IndustrialShowcase from './IndustrialShowcase';
+import IndustrialStore from './IndustrialStore';
 import './showcase.css';
 
 const services = [
@@ -20,8 +21,7 @@ const process = [
 
 function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <article
-      className={`tilt-card ${className}`}
+    <article className={`tilt-card ${className}`}
       onPointerMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect();
         const x = (event.clientX - rect.left) / rect.width - 0.5;
@@ -37,9 +37,7 @@ function TiltCard({ children, className = '' }: { children: React.ReactNode; cla
         event.currentTarget.style.setProperty('--px', '50%');
         event.currentTarget.style.setProperty('--py', '50%');
       }}
-    >
-      {children}
-    </article>
+    >{children}</article>
   );
 }
 
@@ -62,14 +60,12 @@ export default function App() {
       <IndustrialScene />
       <div className="cursor-glow" aria-hidden="true" />
       <header className="nav">
-        <a className="brand" href="#top" onClick={() => setMenu(false)}>
-          <span className="brand-mark">U</span>
-          <span>UJJWAL<span className="muted"> ENGINEERS</span></span>
-        </a>
+        <a className="brand" href="#top" onClick={() => setMenu(false)}><span className="brand-mark">U</span><span>UJJWAL<span className="muted"> ENGINEERS</span></span></a>
         <button className="menu" aria-label="Toggle menu" aria-expanded={menu} onClick={() => setMenu(!menu)}>☰</button>
         <nav className={menu ? 'open' : ''}>
           <a href="#services" onClick={() => setMenu(false)}>Capabilities</a>
           <a href="#machines" onClick={() => setMenu(false)}>Machines</a>
+          <a href="#store" onClick={() => setMenu(false)}>Shop</a>
           <a href="#components" onClick={() => setMenu(false)}>CNC &amp; Bearings</a>
           <a href="#about" onClick={() => setMenu(false)}>Approach</a>
           <a href="#contact" onClick={() => setMenu(false)}>Contact</a>
@@ -96,7 +92,9 @@ export default function App() {
           <div id="machines" className="machine-belt reveal"><div className="belt-label"><span className="kicker">02 / CNC EXPERIENCE</span><strong>Machines we service</strong></div><div className="machine-list">{machines.map((machine) => <span key={machine}>{machine}</span>)}</div></div>
         </section>
 
-        <section className="systems section-3d"><div className="systems-panel reveal"><div><span className="kicker">03 / SYSTEM VIEW</span><h2>Every intervention is part of a <em>larger system.</em></h2></div><div className="systems-copy"><p>Machines, electrical systems, mechanical assemblies and plant infrastructure interact. The 3D environment shifts through the page so the hardware remains present while the story moves from machine service into component inspection.</p><div className="signal-row"><span>PRECISION</span><span>SAFETY</span><span>RELIABILITY</span><span>DELIVERY</span></div></div></div></section>
+        <IndustrialStore />
+
+        <section className="systems section-3d"><div className="systems-panel reveal"><div><span className="kicker">03 / SYSTEM VIEW</span><h2>Every intervention is part of a <em>larger system.</em></h2></div><div className="systems-copy"><p>Machines, electrical systems, mechanical assemblies and plant infrastructure interact. The 3D environment shifts through the page so the hardware remains present while the story moves from machine service into component inspection and the new industrial shop.</p><div className="signal-row"><span>PRECISION</span><span>SAFETY</span><span>RELIABILITY</span><span>DELIVERY</span></div></div></div></section>
 
         <section id="about" className="section approach">
           <div className="section-head reveal"><div><span className="kicker">04 / HOW WE WORK</span><h2>Less noise.<br /><em>More engineering.</em></h2></div><p>We focus on understanding the operating environment, choosing a practical solution and delivering work that is maintainable after the project is finished.</p></div>
