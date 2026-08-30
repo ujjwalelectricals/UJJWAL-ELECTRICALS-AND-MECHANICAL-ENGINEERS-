@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="20" fill="#0b1015"/>
+  <circle cx="64" cy="64" r="45" fill="none" stroke="#f59e0b" stroke-width="5"/>
+  <path d="M36 39v50h11V60h22v29h11V39H69v10H47V39z" fill="#fff"/>
+  <path d="M84 39h9v50h-9z" fill="#f59e0b"/>
+  <text x="64" y="111" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#f59e0b">UE</text>
+</svg>
