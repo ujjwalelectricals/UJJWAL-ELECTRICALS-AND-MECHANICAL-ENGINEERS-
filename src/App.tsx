@@ -3,6 +3,7 @@ import IndustrialScene from './IndustrialScene';
 import IndustrialShowcase from './IndustrialShowcase';
 import IndustrialStore from './IndustrialStore';
 import './showcase.css';
+import './store.css';
 
 const services = [
   { no: '01', title: 'CNC Service & Maintenance', copy: 'Service and maintenance support for CNC equipment with a focus on dependable operation, troubleshooting and long-term machine health.', tag: 'CNC' },
