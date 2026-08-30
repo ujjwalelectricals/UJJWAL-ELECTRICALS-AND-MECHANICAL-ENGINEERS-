@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import IndustrialScene from './IndustrialScene';
+import IndustrialShowcase from './IndustrialShowcase';
 
 const services = [
   { no: '01', title: 'CNC Service & Maintenance', copy: 'Service and maintenance support for CNC equipment with a focus on dependable operation, troubleshooting and long-term machine health.', tag: 'CNC' },
@@ -18,8 +19,7 @@ const process = [
 
 function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <article
-      className={`tilt-card ${className}`}
+    <article className={`tilt-card ${className}`}
       onPointerMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect();
         const x = (event.clientX - rect.left) / rect.width - 0.5;
@@ -35,9 +35,7 @@ function TiltCard({ children, className = '' }: { children: React.ReactNode; cla
         event.currentTarget.style.setProperty('--px', '50%');
         event.currentTarget.style.setProperty('--py', '50%');
       }}
-    >
-      {children}
-    </article>
+    >{children}</article>
   );
 }
 
@@ -60,14 +58,12 @@ export default function App() {
       <IndustrialScene />
       <div className="cursor-glow" aria-hidden="true" />
       <header className="nav">
-        <a className="brand" href="#top" onClick={() => setMenu(false)}>
-          <span className="brand-mark">U</span>
-          <span>UJJWAL<span className="muted"> ENGINEERS</span></span>
-        </a>
+        <a className="brand" href="#top" onClick={() => setMenu(false)}><span className="brand-mark">U</span><span>UJJWAL<span className="muted"> ENGINEERS</span></span></a>
         <button className="menu" aria-label="Toggle menu" aria-expanded={menu} onClick={() => setMenu(!menu)}>☰</button>
         <nav className={menu ? 'open' : ''}>
           <a href="#services" onClick={() => setMenu(false)}>Capabilities</a>
           <a href="#machines" onClick={() => setMenu(false)}>Machines</a>
+          <a href="#components" onClick={() => setMenu(false)}>Components</a>
           <a href="#about" onClick={() => setMenu(false)}>Approach</a>
           <a href="#contact" onClick={() => setMenu(false)}>Contact</a>
           <a className="nav-cta" href="mailto:ujjwalelectricals@gmail.com">Start a project ↗</a>
@@ -93,17 +89,19 @@ export default function App() {
           <div id="machines" className="machine-belt reveal"><div className="belt-label"><span className="kicker">02 / CNC EXPERIENCE</span><strong>Machines we service</strong></div><div className="machine-list">{machines.map((machine) => <span key={machine}>{machine}</span>)}</div></div>
         </section>
 
-        <section className="systems section-3d"><div className="systems-panel reveal"><div><span className="kicker">03 / SYSTEM VIEW</span><h2>Every intervention is part of a <em>larger system.</em></h2></div><div className="systems-copy"><p>Machines, electrical systems, mechanical assemblies and plant infrastructure interact. Scroll through the page and the 3D world shifts from machine hardware to engineering networks and finally into the contact stage.</p><div className="signal-row"><span>PRECISION</span><span>SAFETY</span><span>RELIABILITY</span><span>DELIVERY</span></div></div></div></section>
+        <IndustrialShowcase />
+
+        <section className="systems section-3d"><div className="systems-panel reveal"><div><span className="kicker">09 / SYSTEM VIEW</span><h2>Every intervention is part of a <em>larger system.</em></h2></div><div className="systems-copy"><p>Machines, electrical systems, mechanical assemblies and plant infrastructure interact. Scroll through the page and the 3D world shifts from machine hardware to component-level studies and finally into the contact stage.</p><div className="signal-row"><span>PRECISION</span><span>SAFETY</span><span>RELIABILITY</span><span>DELIVERY</span></div></div></div></section>
 
         <section id="about" className="section approach">
-          <div className="section-head reveal"><div><span className="kicker">04 / HOW WE WORK</span><h2>Less noise.<br /><em>More engineering.</em></h2></div><p>We focus on understanding the operating environment, choosing a practical solution and delivering work that is maintainable after the project is finished.</p></div>
+          <div className="section-head reveal"><div><span className="kicker">10 / HOW WE WORK</span><h2>Less noise.<br /><em>More engineering.</em></h2></div><p>We focus on understanding the operating environment, choosing a practical solution and delivering work that is maintainable after the project is finished.</p></div>
           <div className="process-grid">{process.map(([no, title, copy]) => <TiltCard key={no} className="process-card"><span className="process-no">{no}</span><div><h3>{title}</h3><p>{copy}</p></div><span className="process-line" /></TiltCard>)}</div>
           <div className="quote-panel reveal"><span>ENGINEERING PRINCIPLE</span><p>“Understand the machine. Solve the actual problem. Execute it properly.”</p></div>
         </section>
 
-        <section className="industrial-details"><div className="detail-card reveal"><span className="kicker">05 / INDUSTRIAL FOCUS</span><h3>CNC service &amp; maintenance</h3><p>Focused support for CNC equipment and industrial machine environments.</p><div className="micro-grid">{machines.map((machine) => <span key={machine}>{machine}</span>)}</div></div><div className="detail-card reveal"><span className="kicker">06 / BUSINESS DETAILS</span><h3>Ujjwal Electricals &amp; Mechanical Engineers Enterprises</h3><p>Sector-9, H.No. 2313, Block-51, Siddharth Vihar, Ghaziabad - 201009</p><div className="micro-grid"><span>GSTIN 09CWDPD3387A1ZS</span><span>IEC CWDPD3387A</span></div></div></section>
+        <section className="industrial-details"><div className="detail-card reveal"><span className="kicker">11 / INDUSTRIAL FOCUS</span><h3>CNC service &amp; maintenance</h3><p>Focused support for CNC equipment and industrial machine environments.</p><div className="micro-grid">{machines.map((machine) => <span key={machine}>{machine}</span>)}</div></div><div className="detail-card reveal"><span className="kicker">12 / BUSINESS DETAILS</span><h3>Ujjwal Electricals &amp; Mechanical Engineers Enterprises</h3><p>Sector-9, H.No. 2313, Block-51, Siddharth Vihar, Ghaziabad - 201009</p><div className="micro-grid"><span>GSTIN 09CWDPD3387A1ZS</span><span>IEC CWDPD3387A</span></div></div></section>
 
-        <section id="contact" className="contact section-3d"><div className="contact-copy reveal"><span className="kicker">07 / CONTACT</span><h2>Have a challenging <em>engineering problem?</em></h2><p>Share the machine, plant or engineering requirement. Contact Ujjwal Engineers directly.</p></div><div className="contact-stack reveal"><a className="contact-card" href="mailto:ujjwalelectricals@gmail.com"><span>PRIMARY EMAIL</span><strong>ujjwalelectricals@gmail.com</strong><b>→</b></a><a className="contact-card" href="mailto:durga.pandey44@gmail.com"><span>DIRECT EMAIL</span><strong>durga.pandey44@gmail.com</strong><b>→</b></a><a className="contact-card" href="tel:+919971276078"><span>CALL / WHATSAPP</span><strong>+91 99712 76078</strong><b>→</b></a><a className="contact-card" href="tel:+919910228978"><span>ALTERNATE PHONE</span><strong>+91 99102 28978</strong><b>→</b></a></div></section>
+        <section id="contact" className="contact section-3d"><div className="contact-copy reveal"><span className="kicker">13 / CONTACT</span><h2>Have a challenging <em>engineering problem?</em></h2><p>Share the machine, plant or engineering requirement. Contact Ujjwal Engineers directly.</p></div><div className="contact-stack reveal"><a className="contact-card" href="mailto:ujjwalelectricals@gmail.com"><span>PRIMARY EMAIL</span><strong>ujjwalelectricals@gmail.com</strong><b>→</b></a><a className="contact-card" href="mailto:durga.pandey44@gmail.com"><span>DIRECT EMAIL</span><strong>durga.pandey44@gmail.com</strong><b>→</b></a><a className="contact-card" href="tel:+919971276078"><span>CALL / WHATSAPP</span><strong>+91 99712 76078</strong><b>→</b></a><a className="contact-card" href="tel:+919910228978"><span>ALTERNATE PHONE</span><strong>+91 99102 28978</strong><b>→</b></a></div></section>
       </main>
 
       <footer><span>© {year} UJJWAL ELECTRICALS &amp; MECHANICAL ENGINEERS ENTERPRISES</span><span>SIDDHARTH VIHAR • GHAZIABAD • INDIA</span></footer>
