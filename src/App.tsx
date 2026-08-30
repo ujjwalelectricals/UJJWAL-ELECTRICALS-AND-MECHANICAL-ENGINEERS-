@@ -5,6 +5,7 @@ import IndustrialStore from './IndustrialStore';
 import './showcase.css';
 import './store.css';
 import './premium.css';
+import './light-premium.css';
 
 const machines = ['HYUNDAI WIA', 'MAKINO', 'DAEWOO', 'BFW', 'DOOSAN'];
 const services = [
@@ -82,10 +83,7 @@ export default function App() {
 
       <main id="top" className="content-layer">
         <section className="hero section-3d opening-hero">
-          <div className="opening-backdrop" aria-hidden="true">
-            <div className="opening-grid" />
-            <div className="opening-sweep" />
-          </div>
+          <div className="opening-backdrop" aria-hidden="true"><div className="opening-grid" /><div className="opening-sweep" /></div>
           <div className="hero-copy reveal opening-copy">
             <div className="eyebrow"><span /> UJJWAL / INDUSTRIAL ENGINEERING</div>
             <p className="hero-kicker">CNC SERVICE • MAINTENANCE • ELECTRICAL • MECHANICAL</p>
@@ -94,12 +92,7 @@ export default function App() {
             <div className="actions"><a className="primary" href="#store">Explore tooling <span>→</span></a><a className="secondary" href="#services">Explore capabilities</a></div>
             <div className="hero-meta"><span><b>01</b> CNC SERVICE</span><span><b>02</b> ELECTRICAL</span><span><b>03</b> MECHANICAL</span><span><b>04</b> TOOLING</span></div>
           </div>
-          <div className="opening-product" aria-label="Featured Jaibros BT40 tooling">
-            <div className="opening-product-ring" />
-            <img src="https://www.jaibros.com/cdn/shop/files/20_b988e55f-0aef-4eab-bf1b-ed47b2cf875f.jpg?v=1785825100" alt="Jaibros BT40 ER32 tool holder" />
-            <span>FEATURED / BT40 ER32</span>
-            <small>MOVE POINTER • SCROLL TO ENTER THE 3D SYSTEM</small>
-          </div>
+          <div className="opening-product" aria-label="Featured Jaibros BT40 tooling"><div className="opening-product-ring" /><img src="https://www.jaibros.com/cdn/shop/files/20_b988e55f-0aef-4eab-bf1b-ed47b2cf875f.jpg?v=1785825100" alt="Jaibros BT40 ER32 tool holder" /><span>FEATURED / BT40 ER32</span><small>SCROLL TO ENTER THE 3D SYSTEM</small></div>
           <div className="hero-hud"><span>UJJWAL / INDUSTRIAL SYSTEM</span><b>PRECISION TOOLING</b><i>3D WORLD LOADS AS YOU ENTER THE SYSTEM</i></div>
         </section>
 
