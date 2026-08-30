@@ -9,116 +9,75 @@ import './light-premium.css';
 
 const machines = ['HYUNDAI WIA', 'MAKINO', 'DAEWOO', 'BFW', 'DOOSAN'];
 const services = [
-  { no: '01', title: 'CNC Service & Maintenance', copy: 'CNC equipment support, troubleshooting and maintenance focused on dependable machine health.', tag: 'CNC' },
-  { no: '02', title: 'Industrial Electrical Engineering', copy: 'Electrical engineering support for industrial environments, upgrades and practical execution.', tag: 'ELECTRICAL' },
-  { no: '03', title: 'Mechanical Engineering', copy: 'Mechanical repair, installation and engineering support with precision and maintainability in mind.', tag: 'MECHANICAL' },
-  { no: '04', title: 'Plant Installation & Maintenance', copy: 'Installation, maintenance and industrial project execution from planning through commissioning support.', tag: 'PLANT' },
-];
-const process = [
-  ['01', 'UNDERSTAND', 'We start with the machine, plant condition and actual operating problem.'],
-  ['02', 'ENGINEER', 'We identify a practical technical path without unnecessary complexity.'],
-  ['03', 'EXECUTE', 'Work is carried out with safety, precision and clean delivery in mind.'],
-  ['04', 'SUPPORT', 'The objective is lasting performance, not a one-time intervention.'],
+  ['01', 'CNC SERVICE & MAINTENANCE', 'CNC equipment support, troubleshooting, preventive maintenance and machine-health assistance.'],
+  ['02', 'INDUSTRIAL ELECTRICAL', 'Electrical engineering support for industrial environments, upgrades, controls and maintenance execution.'],
+  ['03', 'MECHANICAL ENGINEERING', 'Mechanical repair, installation and engineering support with a practical focus on precision and reliability.'],
+  ['04', 'PLANT INSTALLATION', 'Installation, maintenance and project execution support from planning through commissioning.'],
+  ['05', 'SPINDLE & TOOLING SUPPORT', 'Practical support around spindle systems, holders, collets, rotating centres and machine tooling.'],
+  ['06', 'BREAKDOWN RESPONSE', 'Structured troubleshooting aimed at identifying the actual operating problem and restoring dependable production.'],
 ] as const;
 
-function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return (
-    <article className={`tilt-card ${className}`}
-      onPointerMove={(event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const x = (event.clientX - rect.left) / rect.width - 0.5;
-        const y = (event.clientY - rect.top) / rect.height - 0.5;
-        event.currentTarget.style.setProperty('--rx', `${-y * 7}deg`);
-        event.currentTarget.style.setProperty('--ry', `${x * 9}deg`);
-        event.currentTarget.style.setProperty('--px', `${(x + 0.5) * 100}%`);
-        event.currentTarget.style.setProperty('--py', `${(y + 0.5) * 100}%`);
-      }}
-      onPointerLeave={(event) => {
-        event.currentTarget.style.setProperty('--rx', '0deg');
-        event.currentTarget.style.setProperty('--ry', '0deg');
-        event.currentTarget.style.setProperty('--px', '50%');
-        event.currentTarget.style.setProperty('--py', '50%');
-      }}
-    >{children}</article>
-  );
+function Header({ page, menu, setMenu }: { page: string; menu: boolean; setMenu: (open: boolean) => void }) {
+  return <header className="site-light-nav">
+    <a className="site-light-brand" href="#home" onClick={() => setMenu(false)}><span>U</span><b>UJJWAL</b><small>ENGINEERS</small></a>
+    <button className="site-light-menu" aria-expanded={menu} aria-label="Open navigation" onClick={() => setMenu(!menu)}>{menu ? 'CLOSE' : 'MENU'}</button>
+    <nav className={menu ? 'site-light-links open' : 'site-light-links'}>
+      <a className={page === 'home' ? 'active' : ''} href="#home" onClick={() => setMenu(false)}>HOME</a>
+      <a className={page === 'services' ? 'active' : ''} href="#services" onClick={() => setMenu(false)}>SERVICES</a>
+      <a className={page === 'shop' ? 'active shop-link' : 'shop-link'} href="#shop" onClick={() => setMenu(false)}>SHOP</a>
+      <a href="#services" onClick={() => { setMenu(false); window.location.hash = 'services'; setTimeout(() => document.getElementById('contact-panel')?.scrollIntoView({ behavior: 'smooth' }), 40); }}>CONTACT</a>
+    </nav>
+    <a className="site-light-cta" href="mailto:ujjwalelectricals@gmail.com">START A PROJECT ↗</a>
+  </header>;
+}
+
+function HomePage() {
+  return <div className="route-page home-route">
+    <section className="home-hero-light">
+      <div className="home-copy-light">
+        <span className="eyebrow-light">UJJWAL / INDUSTRIAL ENGINEERING</span>
+        <h1>Precision that <em>keeps industry moving.</em></h1>
+        <p>Ujjwal Electricals &amp; Mechanical Engineers Enterprises supports CNC equipment, industrial systems, tooling and maintenance requirements with practical engineering execution.</p>
+        <div className="home-actions-light"><a className="button-black" href="#shop">Explore tooling <b>→</b></a><a className="button-outline" href="#services">Our services</a></div>
+        <div className="home-facts-light"><span>GSTIN <b>09CWDPD3387A1ZS</b></span><span>IEC <b>CWDPD3387A</b></span><span>GHAZIABAD / INDIA</span></div>
+      </div>
+      <div className="home-visual-light"><div className="visual-ring ring-a" /><div className="visual-ring ring-b" /><div className="visual-card-light"><img src="https://www.jaibros.com/cdn/shop/files/20_b988e55f-0aef-4eab-bf1b-ed47b2cf875f.jpg?v=1785825100" alt="Jaibros BT40 ER32 tool holder" /><span>FEATURED TOOLING / BT40 ER32</span></div><div className="visual-tag tag-one">PRECISION TOOLING</div><div className="visual-tag tag-two">CNC / VMC</div></div>
+    </section>
+    <section className="light-section-intro"><div><span className="section-code">01 / THE COMPANY</span><h2>Engineering for the <em>machine shop.</em></h2></div><p>From CNC service and industrial maintenance to rotating centres and precision tooling, the experience is built around what buyers and plant teams actually need.</p></section>
+    <section className="home-cards-light"><article><small>01</small><h3>CNC &amp; VMC</h3><p>Tool holders, collets, pull studs, boring heads, workholding and practical machine support.</p><a href="#shop">Browse tooling →</a></article><article><small>02</small><h3>Engineering services</h3><p>CNC service, electrical and mechanical engineering, installation and plant maintenance.</p><a href="#services">View services →</a></article><article><small>03</small><h3>Built to enquire</h3><p>Add parts to your cart, choose quantities and send one clear enquiry when your list is ready.</p><a href="#shop">Open the shop →</a></article></section>
+    <section className="machine-rail-light"><div><span>SUPPORTED MACHINE EXPERIENCE</span><strong>Precision equipment</strong></div><div>{machines.map((machine) => <span key={machine}>{machine}</span>)}</div></section>
+  </div>;
+}
+
+function ServicesPage() {
+  return <div className="route-page services-route">
+    <section className="services-hero-light"><span className="section-code">01 / SERVICES</span><h1>Industrial support.<br /><em>Done properly.</em></h1><p>Practical engineering support for CNC equipment, industrial electrical systems, mechanical assemblies and plant environments.</p></section>
+    <section className="services-list-light">{services.map(([no, title, copy]) => <article key={no} className="service-line-light"><span>{no}</span><div><h2>{title}</h2><p>{copy}</p></div><b>{title.split(' ')[0]}</b></article>)}</section>
+    <section className="service-3d-light"><div className="service-3d-copy"><span className="section-code">08 / MACHINE SYSTEM</span><h2>See the hardware<br /><em>in context.</em></h2><p>The interactive engineering layer focuses on the machine components your service and tooling work actually touches.</p></div><IndustrialShowcase /></section>
+    <section className="service-bottom-light"><div className="service-dark-card"><span className="section-code">WHY UJJWAL</span><h3>Machine-first thinking.</h3><p>Understand the operating condition, identify the real fault, execute the work cleanly and leave a maintainable result.</p><div className="service-stats-light"><div><b>06</b><span>CORE SERVICES</span></div><div><b>05</b><span>MACHINE BRANDS</span></div><div><b>01</b><span>DIRECT CONTACT</span></div></div></div><div id="contact-panel" className="service-contact-card"><span className="section-code">09 / CONTACT</span><h3>Need an engineer?</h3><a href="tel:+919971276078">+91 99712 76078</a><a href="tel:+919910228978">+91 99102 28978</a><a href="mailto:ujjwalelectricals@gmail.com">ujjwalelectricals@gmail.com</a></div></section>
+  </div>;
 }
 
 export default function App() {
+  const [page, setPage] = useState(() => window.location.hash.replace('#', '') || 'home');
   const [menu, setMenu] = useState(false);
-  const [worldEnabled, setWorldEnabled] = useState(false);
-  const year = useMemo(() => new Date().getFullYear(), []);
+  const validPage = useMemo(() => ['home', 'services', 'shop'].includes(page) ? page : 'home', [page]);
 
   useEffect(() => {
-    const root = document.documentElement;
-    const onPointerMove = (event: PointerEvent) => {
-      root.style.setProperty('--cursor-x', `${event.clientX}px`);
-      root.style.setProperty('--cursor-y', `${event.clientY}px`);
-    };
-    const onScroll = () => setWorldEnabled(window.scrollY > window.innerHeight * 0.58);
-    window.addEventListener('pointermove', onPointerMove, { passive: true });
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('scroll', onScroll);
-    };
+    const onHash = () => { setPage(window.location.hash.replace('#', '') || 'home'); setMenu(false); window.scrollTo({ top: 0, behavior: 'auto' }); };
+    window.addEventListener('hashchange', onHash);
+    if (!window.location.hash) history.replaceState(null, '', '#home');
+    return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
-  return (
-    <div className="site">
-      {worldEnabled && <IndustrialScene />}
-      <div className="cursor-glow" aria-hidden="true" />
-      <header className="nav">
-        <a className="brand" href="#top" onClick={() => setMenu(false)}><span className="brand-mark">U</span><span>UJJWAL<span className="muted"> ENGINEERS</span></span></a>
-        <button className="menu" aria-label="Toggle menu" aria-expanded={menu} onClick={() => setMenu(!menu)}>☰</button>
-        <nav className={menu ? 'open' : ''}>
-          <a href="#services" onClick={() => setMenu(false)}>Capabilities</a>
-          <a href="#machines" onClick={() => setMenu(false)}>Machines</a>
-          <a href="#store" onClick={() => setMenu(false)}>Shop</a>
-          <a href="#components" onClick={() => setMenu(false)}>CNC &amp; Bearings</a>
-          <a href="#about" onClick={() => setMenu(false)}>Approach</a>
-          <a href="#contact" onClick={() => setMenu(false)}>Contact</a>
-          <a className="nav-cta" href="mailto:ujjwalelectricals@gmail.com">Start a project ↗</a>
-        </nav>
-      </header>
-
-      <main id="top" className="content-layer">
-        <section className="hero section-3d opening-hero">
-          <div className="opening-backdrop" aria-hidden="true"><div className="opening-grid" /><div className="opening-sweep" /></div>
-          <div className="hero-copy reveal opening-copy">
-            <div className="eyebrow"><span /> UJJWAL / INDUSTRIAL ENGINEERING</div>
-            <p className="hero-kicker">CNC SERVICE • MAINTENANCE • ELECTRICAL • MECHANICAL</p>
-            <h1>Precision that <em>moves industry.</em></h1>
-            <p className="hero-lede">Ujjwal Electricals &amp; Mechanical Engineers Enterprises supports CNC equipment, industrial systems and maintenance requirements with practical engineering execution.</p>
-            <div className="actions"><a className="primary" href="#store">Explore tooling <span>→</span></a><a className="secondary" href="#services">Explore capabilities</a></div>
-            <div className="hero-meta"><span><b>01</b> CNC SERVICE</span><span><b>02</b> ELECTRICAL</span><span><b>03</b> MECHANICAL</span><span><b>04</b> TOOLING</span></div>
-          </div>
-          <div className="opening-product" aria-label="Featured Jaibros BT40 tooling"><div className="opening-product-ring" /><img src="https://www.jaibros.com/cdn/shop/files/20_b988e55f-0aef-4eab-bf1b-ed47b2cf875f.jpg?v=1785825100" alt="Jaibros BT40 ER32 tool holder" /><span>FEATURED / BT40 ER32</span><small>SCROLL TO ENTER THE 3D SYSTEM</small></div>
-          <div className="hero-hud"><span>UJJWAL / INDUSTRIAL SYSTEM</span><b>PRECISION TOOLING</b><i>3D WORLD LOADS AS YOU ENTER THE SYSTEM</i></div>
-        </section>
-
-        <section id="services" className="section capabilities">
-          <div className="section-head reveal"><div><span className="kicker">01 / CAPABILITIES</span><h2>Built around <em>real machines.</em></h2></div><p>Industrial support with practical engineering thinking. Each capability is part of one connected system rather than a collection of isolated services.</p></div>
-          <div className="service-grid">{services.map((service) => <TiltCard key={service.no}><div className="service-top"><span>{service.no}</span><strong>{service.tag}</strong></div><div className="service-orb" /><h3>{service.title}</h3><p>{service.copy}</p><a href="#contact">ENQUIRE <span>↗</span></a></TiltCard>)}</div>
-          <div id="machines" className="machine-belt reveal"><div className="belt-label"><span className="kicker">02 / CNC EXPERIENCE</span><strong>Machines we service</strong></div><div className="machine-list">{machines.map((machine) => <span key={machine}>{machine}</span>)}</div></div>
-        </section>
-
-        <IndustrialStore />
-        <IndustrialShowcase />
-
-        <section className="systems section-3d"><div className="systems-panel reveal"><div><span className="kicker">09 / SYSTEM VIEW</span><h2>Every intervention is part of a <em>larger system.</em></h2></div><div className="systems-copy"><p>Machines, electrical systems, mechanical assemblies and plant infrastructure interact. The 3D layer activates deeper in the experience so the opening stays fast while the interactive engineering world appears as you explore.</p><div className="signal-row"><span>PRECISION</span><span>SAFETY</span><span>RELIABILITY</span><span>DELIVERY</span></div></div></div></section>
-
-        <section id="about" className="section approach">
-          <div className="section-head reveal"><div><span className="kicker">10 / HOW WE WORK</span><h2>Less noise.<br /><em>More engineering.</em></h2></div><p>We focus on understanding the operating environment, choosing a practical solution and delivering work that is maintainable after the project is finished.</p></div>
-          <div className="process-grid">{process.map(([no, title, copy]) => <TiltCard key={no} className="process-card"><span className="process-no">{no}</span><div><h3>{title}</h3><p>{copy}</p></div><span className="process-line" /></TiltCard>)}</div>
-          <div className="quote-panel reveal"><span>ENGINEERING PRINCIPLE</span><p>“Understand the machine. Solve the actual problem. Execute it properly.”</p></div>
-        </section>
-
-        <section className="industrial-details"><div className="detail-card reveal"><span className="kicker">11 / INDUSTRIAL FOCUS</span><h3>CNC service &amp; maintenance</h3><p>Focused support for CNC equipment and industrial machine environments, with attention to tooling, spindle systems, bearings and machine health.</p><div className="micro-grid">{machines.map((machine) => <span key={machine}>{machine}</span>)}</div></div><div className="detail-card reveal"><span className="kicker">12 / BUSINESS DETAILS</span><h3>Ujjwal Electricals &amp; Mechanical Engineers Enterprises</h3><p>Sector-9, H.No. 2313, Block-51, Siddharth Vihar, Ghaziabad - 201009</p><div className="micro-grid"><span>GSTIN 09CWDPD3387A1ZS</span><span>IEC CWDPD3387A</span></div></div></section>
-
-        <section id="contact" className="contact section-3d"><div className="contact-copy reveal"><span className="kicker">13 / CONTACT</span><h2>Have a challenging <em>engineering problem?</em></h2><p>Share the machine, plant or engineering requirement. Contact Ujjwal Engineers directly.</p></div><div className="contact-stack reveal"><a className="contact-card" href="mailto:ujjwalelectricals@gmail.com"><span>PRIMARY EMAIL</span><strong>ujjwalelectricals@gmail.com</strong><b>→</b></a><a className="contact-card" href="mailto:durga.pandey44@gmail.com"><span>DIRECT EMAIL</span><strong>durga.pandey44@gmail.com</strong><b>→</b></a><a className="contact-card" href="tel:+919971276078"><span>CALL / WHATSAPP</span><strong>+91 99712 76078</strong><b>→</b></a><a className="contact-card" href="tel:+919910228978"><span>ALTERNATE PHONE</span><strong>+91 99102 28978</strong><b>→</b></a></div></section>
-      </main>
-
-      <footer><span>© {year} UJJWAL ELECTRICALS &amp; MECHANICAL ENGINEERS ENTERPRISES</span><span>SIDDHARTH VIHAR • GHAZIABAD • INDIA</span></footer>
-    </div>
-  );
+  return <div className="light-site">
+    {validPage !== 'shop' && <IndustrialScene />}
+    <Header page={validPage} menu={menu} setMenu={setMenu} />
+    <main className="site-main-light">
+      {validPage === 'home' && <HomePage />}
+      {validPage === 'services' && <ServicesPage />}
+      {validPage === 'shop' && <IndustrialStore />}
+    </main>
+    <footer className="site-light-footer"><span>© {new Date().getFullYear()} UJJWAL ELECTRICALS &amp; MECHANICAL ENGINEERS ENTERPRISES</span><span>SECTOR-9 • SIDDHARTH VIHAR • GHAZIABAD • INDIA</span></footer>
+  </div>;
 }
