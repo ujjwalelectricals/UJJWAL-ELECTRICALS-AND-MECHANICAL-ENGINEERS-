@@ -1,40 +1,112 @@
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, Float, PerspectiveCamera, Sparkles, Torus, Box } from '@react-three/drei';
-import { Suspense, useRef, useState } from 'react';
-import * as THREE from 'three';
+import { useEffect, useMemo, useState } from 'react';
+import IndustrialScene from './IndustrialScene';
 
-function Gear({ radius = 1.3, teeth = 12, speed = 0.45, reverse = false }: { radius?: number; teeth?: number; speed?: number; reverse?: boolean }) {
-  const ref = useRef<THREE.Group>(null);
-  useFrame((_, delta) => { if (ref.current) ref.current.rotation.z += delta * speed * (reverse ? -1 : 1); });
-  const toothWidth = ((Math.PI * 2 * radius) / teeth) * 0.48;
-  return <group ref={ref} rotation={[Math.PI / 2, 0, 0]}><mesh><cylinderGeometry args={[radius * .78, radius * .78, .22, 48]} /><meshStandardMaterial color="#151b24" metalness={.92} roughness={.2} /></mesh>{Array.from({length:teeth}).map((_,i)=><mesh key={i} rotation={[0,0,(i/teeth)*Math.PI*2]} position={[Math.cos((i/teeth)*Math.PI*2)*radius,0,Math.sin((i/teeth)*Math.PI*2)*radius]}><boxGeometry args={[toothWidth,.26,radius*.28]} /><meshStandardMaterial color="#273342" metalness={.9} roughness={.24} /></mesh>)}<mesh position={[0,.14,0]}><torusGeometry args={[radius*.28,.07,12,32]} /><meshStandardMaterial color="#f59e0b" metalness={.85} roughness={.18} emissive="#5a3000" emissiveIntensity={.25} /></mesh></group>;
+const services = [
+  { no: '01', title: 'CNC Service & Maintenance', copy: 'Service and maintenance support for CNC equipment with a focus on dependable operation, troubleshooting and long-term machine health.', tag: 'CNC' },
+  { no: '02', title: 'Industrial Electrical Engineering', copy: 'Electrical engineering support for industrial environments, upgrades, maintenance and practical on-site execution.', tag: 'ELECTRICAL' },
+  { no: '03', title: 'Mechanical Engineering', copy: 'Mechanical repair, installation and engineering support built around precision, safety and maintainability.', tag: 'MECHANICAL' },
+  { no: '04', title: 'Plant Installation & Maintenance', copy: 'Hands-on installation, maintenance and industrial project execution from planning through commissioning support.', tag: 'PLANT' },
+];
+
+const machines = ['HYUNDAI WIA', 'MAKINO', 'DAEWOO', 'BFW', 'DOOSAN'];
+const process = [
+  ['01', 'UNDERSTAND', 'We start with the machine, plant condition and the actual operating problem.'],
+  ['02', 'ENGINEER', 'We identify a practical technical path instead of adding unnecessary complexity.'],
+  ['03', 'EXECUTE', 'Work is carried out with a strong focus on safety, reliability and clean delivery.'],
+  ['04', 'SUPPORT', 'The goal is lasting performance, not a one-time intervention.'],
+] as const;
+
+function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <article
+      className={`tilt-card ${className}`}
+      onPointerMove={(event) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        event.currentTarget.style.setProperty('--rx', `${-y * 7}deg`);
+        event.currentTarget.style.setProperty('--ry', `${x * 9}deg`);
+        event.currentTarget.style.setProperty('--px', `${(x + 0.5) * 100}%`);
+        event.currentTarget.style.setProperty('--py', `${(y + 0.5) * 100}%`);
+      }}
+      onPointerLeave={(event) => {
+        event.currentTarget.style.setProperty('--rx', '0deg');
+        event.currentTarget.style.setProperty('--ry', '0deg');
+        event.currentTarget.style.setProperty('--px', '50%');
+        event.currentTarget.style.setProperty('--py', '50%');
+      }}
+    >
+      {children}
+    </article>
+  );
 }
 
-function Machine() {
-  const group = useRef<THREE.Group>(null);
-  useFrame(({clock,pointer})=>{ if(!group.current)return; group.current.rotation.y=THREE.MathUtils.lerp(group.current.rotation.y,pointer.x*.22,.035); group.current.rotation.x=THREE.MathUtils.lerp(group.current.rotation.x,-pointer.y*.08,.035); group.current.position.y=Math.sin(clock.elapsedTime*.7)*.08; });
-  return <group ref={group} scale={1.05}><mesh position={[0,-1.25,0]}><boxGeometry args={[5.8,.45,3.2]}/><meshStandardMaterial color="#111820" metalness={.86} roughness={.25}/></mesh><mesh position={[0,-.7,0]}><boxGeometry args={[4.7,.8,2.5]}/><meshStandardMaterial color="#1b2530" metalness={.8} roughness={.3}/></mesh><mesh position={[-1.75,.55,0]}><boxGeometry args={[.55,2.5,1.9]}/><meshStandardMaterial color="#222d38" metalness={.82} roughness={.27}/></mesh><mesh position={[1.75,.55,0]}><boxGeometry args={[.55,2.5,1.9]}/><meshStandardMaterial color="#222d38" metalness={.82} roughness={.27}/></mesh><mesh position={[0,1.35,0]}><boxGeometry args={[4.3,.38,2.05]}/><meshStandardMaterial color="#283541" metalness={.88} roughness={.22}/></mesh><mesh position={[0,.55,1.12]}><boxGeometry args={[2.2,1.25,.12]}/><meshStandardMaterial color="#071016" metalness={.3} roughness={.15} emissive="#0b3440" emissiveIntensity={.35}/></mesh><group position={[-.45,.55,1.25]}><Gear radius={.72} teeth={12} speed={.7}/><group position={[1.05,0,.02]}><Gear radius={.42} teeth={9} speed={1.05} reverse/></group></group></group>;
-}
+export default function App() {
+  const [menu, setMenu] = useState(false);
+  const year = useMemo(() => new Date().getFullYear(), []);
 
-function Core() {
-  const ref=useRef<THREE.Group>(null);
-  useFrame(({clock,pointer})=>{if(!ref.current)return;ref.current.rotation.y+=.004;ref.current.rotation.x=THREE.MathUtils.lerp(ref.current.rotation.x,pointer.y*.15,.03);ref.current.position.y=Math.sin(clock.elapsedTime)*.12;});
-  return <group ref={ref}><Torus args={[1.55,.06,16,96]} rotation={[Math.PI/2,0,0]}><meshStandardMaterial color="#f59e0b" emissive="#7a4100" emissiveIntensity={.5} metalness={.9} roughness={.16}/></Torus><Torus args={[1.12,.035,12,64]} rotation={[Math.PI/2,0,Math.PI/4]}><meshStandardMaterial color="#38bdf8" emissive="#063c54" emissiveIntensity={.55} metalness={.8} roughness={.18}/></Torus><Box args={[.4,2.7,.4]} rotation={[0,0,Math.PI/4]}><meshStandardMaterial color="#202b35" metalness={.9} roughness={.2}/></Box><Box args={[.4,2.7,.4]} rotation={[0,0,-Math.PI/4]}><meshStandardMaterial color="#202b35" metalness={.9} roughness={.2}/></Box><Sparkles count={55} scale={4.5} size={1.5} speed={.45} opacity={.55}/></group>;
-}
+  useEffect(() => {
+    const root = document.documentElement;
+    const move = (event: PointerEvent) => {
+      root.style.setProperty('--cursor-x', `${event.clientX}px`);
+      root.style.setProperty('--cursor-y', `${event.clientY}px`);
+    };
+    window.addEventListener('pointermove', move, { passive: true });
+    return () => window.removeEventListener('pointermove', move);
+  }, []);
 
-function Scene({core=false}:{core?:boolean}) {
-  return <Canvas dpr={[1,1.5]} gl={{antialias:true,powerPreference:'high-performance'}}><PerspectiveCamera makeDefault position={core?[0,0,7]:[7,3.5,9]} fov={core?40:45}/><ambientLight intensity={.5}/><spotLight position={[5,7,6]} intensity={130} angle={.35} penumbra={1} color="#fff4df"/><pointLight position={[-5,1,3]} intensity={55} color="#0ea5e9"/><pointLight position={[4,-1,-4]} intensity={35} color="#f59e0b"/><Suspense fallback={null}><Environment preset="city"/></Suspense>{core?<Float speed={1.1} rotationIntensity={.25} floatIntensity={.3}><Core/></Float>:<><Float speed={1.2} rotationIntensity={.15} floatIntensity={.35}><Machine/></Float><Sparkles count={70} scale={[12,7,10]} size={1.2} speed={.25} opacity={.35}/></>}</Canvas>;
-}
+  return (
+    <div className="site">
+      <IndustrialScene />
+      <div className="cursor-glow" aria-hidden="true" />
+      <header className="nav">
+        <a className="brand" href="#top" onClick={() => setMenu(false)}>
+          <span className="brand-mark">U</span>
+          <span>UJJWAL<span className="muted"> ENGINEERS</span></span>
+        </a>
+        <button className="menu" aria-label="Toggle menu" aria-expanded={menu} onClick={() => setMenu(!menu)}>☰</button>
+        <nav className={menu ? 'open' : ''}>
+          <a href="#services" onClick={() => setMenu(false)}>Capabilities</a>
+          <a href="#machines" onClick={() => setMenu(false)}>Machines</a>
+          <a href="#about" onClick={() => setMenu(false)}>Approach</a>
+          <a href="#contact" onClick={() => setMenu(false)}>Contact</a>
+          <a className="nav-cta" href="mailto:ujjwalelectricals@gmail.com">Start a project ↗</a>
+        </nav>
+      </header>
 
-const services=['CNC Service & Maintenance','Industrial Electrical Engineering','Mechanical Engineering','Plant Installation & Maintenance'];
-const icons=['⌁','⚡','⚙','◈'];
-const machines=['Hyundai WIA','Makino','Daewoo','BFW','Doosan'];
+      <main id="top" className="content-layer">
+        <section className="hero section-3d">
+          <div className="hero-copy reveal">
+            <div className="eyebrow"><span /> CNC SERVICE • MAINTENANCE • ENGINEERING</div>
+            <p className="hero-kicker">UJJWAL ELECTRICALS &amp; MECHANICAL ENGINEERS ENTERPRISES</p>
+            <h1>Engineering that <em>keeps industry moving.</em></h1>
+            <p className="hero-lede">Dependable CNC service, maintenance, electrical engineering and mechanical support for industrial environments.</p>
+            <div className="actions"><a className="primary" href="#contact">Discuss your project <span>→</span></a><a className="secondary" href="#services">Explore capabilities</a></div>
+            <div className="hero-meta"><span><b>01</b> CNC SERVICE</span><span><b>02</b> ELECTRICAL</span><span><b>03</b> MECHANICAL</span><span><b>04</b> MAINTENANCE</span></div>
+          </div>
+          <div className="hero-hud"><span>UJJWAL / INDUSTRIAL SYSTEM</span><b>LIVE 3D ENVIRONMENT</b><i>MOVE YOUR POINTER • SCROLL TO NAVIGATE</i></div>
+        </section>
 
-export default function App(){
-  const [menu,setMenu]=useState(false);
-  return <div className="site"><header className="nav"><a className="brand" href="#top"><span className="brand-mark">U</span><span>UJJWAL<span className="muted"> ENGINEERS</span></span></a><button className="menu" aria-label="Toggle menu" aria-expanded={menu} onClick={()=>setMenu(!menu)}>☰</button><nav className={menu?'open':''}><a href="#services" onClick={()=>setMenu(false)}>Services</a><a href="#about" onClick={()=>setMenu(false)}>About</a><a href="#contact" onClick={()=>setMenu(false)}>Contact</a><a className="nav-cta" href="mailto:ujjwalelectricals@gmail.com">Start a project ↗</a></nav></header>
-  <main id="top"><section className="hero"><div className="hero-copy"><div className="eyebrow"><span/> CNC SERVICE • MAINTENANCE • ENGINEERING</div><h1>Engineering that <em>keeps industry moving.</em></h1><p>Ujjwal Electricals & Mechanical Engineers Enterprises provides CNC service and maintenance plus dependable electrical and mechanical engineering solutions for industrial environments.</p><div className="actions"><a className="primary" href="#contact">Discuss your project <span>→</span></a><a className="secondary" href="#services">Explore capabilities</a></div><div className="stats"><div><strong>CNC</strong><span>Service & maintenance</span></div><div><strong>E&amp;M</strong><span>Electrical + mechanical</span></div><div><strong>GZB</strong><span>Ghaziabad, Uttar Pradesh</span></div></div></div><div className="scene"><Scene/><div className="scene-label"><span className="pulse"/> LIVE 3D ENGINEERING VIEW<br/><small>PRECISION / PERFORMANCE / RELIABILITY</small></div></div></section>
-  <section id="services" className="section"><div className="section-head"><div><span className="kicker">01 / CAPABILITIES</span><h2>Built for the <em>real world.</em></h2></div><p>From CNC maintenance to electrical and mechanical execution, we focus on practical, maintainable industrial solutions.</p></div><div className="capability-layout"><div className="cards">{services.map((s,i)=><article className="card" key={s}><span className="num">0{i+1}</span><div className="icon">{icons[i]}</div><h3>{s}</h3><p>Precision-led execution with safety, reliability and long-term performance in mind.</p><a href="#contact">Enquire ↗</a></article>)}</div><div className="core-visual"><Scene core/><div className="core-hud"><span>ENGINEERING CORE</span><b>3D SYSTEM / ONLINE</b><i>ROTATIONAL ANALYSIS</i></div></div></div><div className="machine-strip"><span className="kicker">CNC / MACHINE EXPERIENCE</span><div>{machines.map(m=><span key={m}>{m}</span>)}</div></div></section>
-  <section id="about" className="about"><div className="about-grid"><div><span className="kicker">02 / WHY UJJWAL</span><h2>Serious engineering.<br/><em>Zero shortcuts.</em></h2><div className="orbit-badge"><div className="orbit orbit-a"/><div className="orbit orbit-b"/><span>UE</span></div></div><div><p className="large">We combine engineering discipline with hands-on execution to help industrial teams service, upgrade and maintain critical systems.</p><p>Our approach is simple: understand the machine or site, engineer the right solution, execute safely, and leave behind work that lasts.</p><div className="principles"><span>01 / SAFETY</span><span>02 / PRECISION</span><span>03 / DELIVERY</span></div></div></div></section>
-  <section id="contact" className="contact"><div><span className="kicker">03 / CONTACT UJJWAL ENGINEERS</span><h2>Have a challenging<br/><em>engineering problem?</em></h2><p>Tell us what you're building, repairing or maintaining. Let's engineer the way forward.</p><div className="company-details"><span>GSTIN: 09CWDPD3387A1ZS</span><span>IEC: CWDPD3387A</span><span>Sector-9, H.No. 2313, Block-51, Siddharth Vihar, Ghaziabad - 201009</span></div></div><div className="contact-stack"><a className="contact-card" href="mailto:ujjwalelectricals@gmail.com"><span>PRIMARY EMAIL</span><strong>ujjwalelectricals@gmail.com</strong><b>→</b></a><a className="contact-card" href="tel:+919971276078"><span>CALL / WHATSAPP</span><strong>+91 99712 76078</strong><b>→</b></a><a className="contact-card" href="tel:+919910228978"><span>ALTERNATE PHONE</span><strong>+91 99102 28978</strong><b>→</b></a></div></section></main><footer><span>© {new Date().getFullYear()} UJJWAL ELECTRICALS &amp; MECHANICAL ENGINEERS ENTERPRISES</span><span>ENGINEERED FOR PERFORMANCE.</span></footer></div>;
+        <section id="services" className="section capabilities">
+          <div className="section-head reveal"><div><span className="kicker">01 / CAPABILITIES</span><h2>Built around <em>real machines.</em></h2></div><p>Industrial support with practical engineering thinking. Each capability is presented as part of one connected system rather than a collection of isolated services.</p></div>
+          <div className="service-grid">{services.map((service) => <TiltCard key={service.no}><div className="service-top"><span>{service.no}</span><strong>{service.tag}</strong></div><div className="service-orb" /><h3>{service.title}</h3><p>{service.copy}</p><a href="#contact">ENQUIRE <span>↗</span></a></TiltCard>)}</div>
+          <div id="machines" className="machine-belt reveal"><div className="belt-label"><span className="kicker">02 / CNC EXPERIENCE</span><strong>Machines we service</strong></div><div className="machine-list">{machines.map((machine) => <span key={machine}>{machine}</span>)}</div></div>
+        </section>
+
+        <section className="systems section-3d"><div className="systems-panel reveal"><div><span className="kicker">03 / SYSTEM VIEW</span><h2>Every intervention is part of a <em>larger system.</em></h2></div><div className="systems-copy"><p>Machines, electrical systems, mechanical assemblies and plant infrastructure interact. Scroll through the page and the 3D world shifts from machine hardware to engineering networks and finally into the contact stage.</p><div className="signal-row"><span>PRECISION</span><span>SAFETY</span><span>RELIABILITY</span><span>DELIVERY</span></div></div></div></section>
+
+        <section id="about" className="section approach">
+          <div className="section-head reveal"><div><span className="kicker">04 / HOW WE WORK</span><h2>Less noise.<br /><em>More engineering.</em></h2></div><p>We focus on understanding the operating environment, choosing a practical solution and delivering work that is maintainable after the project is finished.</p></div>
+          <div className="process-grid">{process.map(([no, title, copy]) => <TiltCard key={no} className="process-card"><span className="process-no">{no}</span><div><h3>{title}</h3><p>{copy}</p></div><span className="process-line" /></TiltCard>)}</div>
+          <div className="quote-panel reveal"><span>ENGINEERING PRINCIPLE</span><p>“Understand the machine. Solve the actual problem. Execute it properly.”</p></div>
+        </section>
+
+        <section className="industrial-details"><div className="detail-card reveal"><span className="kicker">05 / INDUSTRIAL FOCUS</span><h3>CNC service &amp; maintenance</h3><p>Focused support for CNC equipment and industrial machine environments.</p><div className="micro-grid">{machines.map((machine) => <span key={machine}>{machine}</span>)}</div></div><div className="detail-card reveal"><span className="kicker">06 / BUSINESS DETAILS</span><h3>Ujjwal Electricals &amp; Mechanical Engineers Enterprises</h3><p>Sector-9, H.No. 2313, Block-51, Siddharth Vihar, Ghaziabad - 201009</p><div className="micro-grid"><span>GSTIN 09CWDPD3387A1ZS</span><span>IEC CWDPD3387A</span></div></div></section>
+
+        <section id="contact" className="contact section-3d"><div className="contact-copy reveal"><span className="kicker">07 / CONTACT</span><h2>Have a challenging <em>engineering problem?</em></h2><p>Share the machine, plant or engineering requirement. Contact Ujjwal Engineers directly.</p></div><div className="contact-stack reveal"><a className="contact-card" href="mailto:ujjwalelectricals@gmail.com"><span>PRIMARY EMAIL</span><strong>ujjwalelectricals@gmail.com</strong><b>→</b></a><a className="contact-card" href="mailto:durga.pandey44@gmail.com"><span>DIRECT EMAIL</span><strong>durga.pandey44@gmail.com</strong><b>→</b></a><a className="contact-card" href="tel:+919971276078"><span>CALL / WHATSAPP</span><strong>+91 99712 76078</strong><b>→</b></a><a className="contact-card" href="tel:+919910228978"><span>ALTERNATE PHONE</span><strong>+91 99102 28978</strong><b>→</b></a></div></section>
+      </main>
+
+      <footer><span>© {year} UJJWAL ELECTRICALS &amp; MECHANICAL ENGINEERS ENTERPRISES</span><span>SIDDHARTH VIHAR • GHAZIABAD • INDIA</span></footer>
+    </div>
+  );
 }
