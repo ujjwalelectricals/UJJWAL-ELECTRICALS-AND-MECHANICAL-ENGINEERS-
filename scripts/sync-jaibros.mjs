@@ -1,8 +1,8 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 
 const collections = [
-  ['BEARINGS & CENTRES', 'low-speed-revolving-center'],
-  ['HIGH-SPEED CENTRES', 'revolving-center'],
+  ['BEARINGS & LIVE CENTRES', 'low-speed-revolving-center'],
+  ['BEARINGS & LIVE CENTRES', 'revolving-center'],
   ['BT40 HOLDERS', 'bt-40-type'],
   ['ISO40 HOLDERS', 'iso40-holders'],
   ['SK40 HOLDERS', 'sk-40-type'],
@@ -37,16 +37,16 @@ function mapProduct(product, category) {
   const variants = Array.isArray(product.variants) ? product.variants : [];
   const priced = variants.find((variant) => Number(variant.price) > 0) || variants[0];
   const images = Array.from(new Set((product.images || []).map((image) => image.src).filter(Boolean)));
+  const normalizedBrand = normalize(product.vendor || '').replace(/jaibros/ig, '').trim();
   return {
     id: `${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${product.id}`,
     name: normalize(product.title),
-    brand: normalize(product.vendor || 'JAIBROS'),
+    brand: normalizedBrand || 'INDUSTRIAL TOOLING',
     price: priced ? Number(priced.price) : 0,
     category,
     image: images[0] || '',
     images,
-    sourceUrl: `https://www.jaibros.com/products/${product.handle}`,
-    tags: Array.isArray(product.tags) ? product.tags : [],
+    tags: Array.isArray(product.tags) ? product.tags.map((tag) => normalize(String(tag))).filter(Boolean) : [],
   };
 }
 
@@ -73,7 +73,7 @@ for (const [category, handle] of collections) {
   try {
     const items = await getCollection(category, handle);
     all.push(...items);
-    console.log(`${category}: ${items.length} products`);
+    console.log(`${category} / ${handle}: ${items.length} products`);
   } catch (error) {
     console.warn(`Catalog sync skipped ${category}: ${error.message}`);
   }
@@ -86,8 +86,9 @@ const products = all.filter((product) => {
   return true;
 });
 
-if (products.length < 5) throw new Error('Jaibros sync returned too few products; refusing to overwrite the catalog.');
+const bearingProducts = products.filter((product) => /bearing|revolving center|revolving centre|live center|live centre/i.test(`${product.name} ${product.tags.join(' ')}`));
+if (products.length < 5 || bearingProducts.length < 3) throw new Error('Catalog sync returned too few products or bearing items; refusing to overwrite catalog.');
 
 await mkdir('public', { recursive: true });
-await writeFile('public/jaibros-products.json', JSON.stringify({ syncedAt: new Date().toISOString(), products }, null, 2));
-console.log(`Saved ${products.length} unique Jaibros products to public/jaibros-products.json`);
+await writeFile('public/industrial-products.json', JSON.stringify({ syncedAt: new Date().toISOString(), products }, null, 2));
+console.log(`Saved ${products.length} unique products, including ${bearingProducts.length} bearing/live-centre products.`);
