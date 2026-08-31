@@ -1,0 +1,114 @@
+{
+  "products": [
+    {
+      "id": "bearing-skf-6200-open",
+      "name": "SKF 6200 — Open Deep Groove Ball Bearing",
+      "brand": "SKF",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://bizweb.dktcdn.net/thumb/grande/100/107/505/products/bearing-skf-mau-c0665313-1988-43e7-8f6d-2591eafeb9e9.jpg?v=1470214936363",
+      "sourceUrl": "https://www.skf.com/",
+      "tags": ["6200", "10x30x9 mm", "OPEN", "DEEP GROOVE", "SINGLE ROW"]
+    },
+    {
+      "id": "bearing-nsk-6200-open",
+      "name": "NSK 6200 — Open Deep Groove Ball Bearing",
+      "brand": "NSK",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://simplybearings.co.uk/shop/images/assets/products/6200-nsk.jpg",
+      "sourceUrl": "https://www.nsk.com/in-en/engineering/products/bearings/ball-bearings/deep-groove-ball-bearings/single-row-deep-groove-ball-bearings/6200-apn.html",
+      "tags": ["6200", "10x30x9 mm", "OPEN", "DEEP GROOVE", "8 BALLS", "P0"]
+    },
+    {
+      "id": "bearing-ntn-6200-open",
+      "name": "NTN 6200 — Open Deep Groove Ball Bearing",
+      "brand": "NTN",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://cdn1.npcdn.net/image/1672301805081d74388509b50f4d68f0c7a1dc3893.jpg?md5id=6a0143100dc167553a0128d5a66ee4d4&new_height=1000&new_width=1000&size=max&w=1611739902",
+      "sourceUrl": "https://www.ntn-snr.com/",
+      "tags": ["6200", "OPEN", "DEEP GROOVE", "SINGLE ROW", "METRIC"]
+    },
+    {
+      "id": "bearing-fag-6200-2rsr",
+      "name": "FAG 6200-2RSR — Sealed Deep Groove Ball Bearing",
+      "brand": "FAG",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://image.made-in-china.com/202f0j00tKcbvBAspOpj/FAG-SKF-Koyo-NTN-NSK-Quality-Assurance-6202-6206-6207-6208-Deep-Groove-Ball-Bearing.jpg",
+      "sourceUrl": "https://www.schaeffler.com/",
+      "tags": ["6200-2RSR", "10x30x9 mm", "DOUBLE SEALED", "DEEP GROOVE", "NBR"]
+    },
+    {
+      "id": "bearing-koyo-6200-2rs",
+      "name": "Koyo 6200-2RS — Contact Sealed Deep Groove Ball Bearing",
+      "brand": "KOYO",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://image.made-in-china.com/202f0j00FQPUTpJMnygw/Koyo-High-Precision-Deep-Groove-Ball-Bearing-6311-6311-Z-6311-2z-6311-RS-6311-2RS-for-Household-Appliances.webp",
+      "sourceUrl": "https://koyo.jtekt.co.jp/en/products/detail/?pno=6200+2RS",
+      "tags": ["6200-2RS", "10x30x9 mm", "SEALED", "CONTACT SEAL", "DEEP GROOVE"]
+    },
+    {
+      "id": "bearing-timken-6200-2rs",
+      "name": "Timken 6200-2RS — Sealed Deep Groove Ball Bearing",
+      "brand": "TIMKEN",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://media.monotaro.id/mid01/big/Komponen%20Mekanikal%2C%20Laher%20%26%20Roda/Laher/Laher/Laher/TIMKEN%20Deep%20Groove%20Ball%20Bearing%206000%20Series%20%28Laher%29/P102049693-3.jpg",
+      "sourceUrl": "https://cad.timken.com/item/deep-groove-ball-bearings/deep-groove-ball-bearings--6000--6200--6300--64/6200-2rs",
+      "tags": ["6200-2RS", "10x30x9 mm", "CONTACT SEALS", "DEEP GROOVE", "HIGH SPEED"]
+    },
+    {
+      "id": "bearing-nachi-6200-2rs",
+      "name": "NACHI 6200 — Shielded / Sealed Deep Groove Ball Bearing",
+      "brand": "NACHI",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://image.made-in-china.com/202f0j00oUvqawPtsEcL/Wj930-Japan-Bearing-NSK-NTN-NACHI-6201-6202-6203-6204-6205-6206-6207-6208-6209-6210-Zz-2RS-DDU-Deep-Groove-Ball-Bearing-Auto-Bearing.webp",
+      "sourceUrl": "https://www.nachi-fujikoshi.co.jp/eng/",
+      "tags": ["6200 FAMILY", "DDU", "ZZ", "2RS", "DEEP GROOVE", "JAPAN"]
+    },
+    {
+      "id": "bearing-koyo-6200-open",
+      "name": "Koyo 6200 — Open Deep Groove Ball Bearing",
+      "brand": "KOYO",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://i.ebayimg.com/images/g/wUQAAOSwVXRg7Vk7/s-l1200.jpg",
+      "sourceUrl": "https://koyo.jtekt.co.jp/en/products/detail/?pno=6200",
+      "tags": ["6200", "10x30x9 mm", "OPEN", "DEEP GROOVE", "SINGLE ROW"]
+    },
+    {
+      "id": "bearing-koyo-6200-2rd",
+      "name": "Koyo 6200-2RD — Light-Contact Sealed Ball Bearing",
+      "brand": "KOYO",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://image.made-in-china.com/202f0j00FQPUTpJMnygw/Koyo-High-Precision-Deep-Groove-Ball-Bearing-6311-6311-Z-6311-2z-6311-RS-6311-2RS-for-Household-Appliances.webp",
+      "sourceUrl": "https://koyo.jtekt.co.jp/en/products/detail/?pno=6200+2RD",
+      "tags": ["6200-2RD", "10x30x9 mm", "LIGHT CONTACT SEAL", "DEEP GROOVE", "LOW DRAG"]
+    },
+    {
+      "id": "bearing-skf-6200-2rs",
+      "name": "SKF 6200-2RS — Sealed Deep Groove Ball Bearing",
+      "brand": "SKF",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://eshop.papadopoulos-sa.com/38910-large_default/skf-6200-2rsltn9-c3vt162-deep-groove-ball-bearings.jpg",
+      "sourceUrl": "https://www.skf.com/",
+      "tags": ["6200", "2RS", "SEALED", "DEEP GROOVE", "C3 OPTIONS"]
+    },
+    {
+      "id": "bearing-fag-6200-c3",
+      "name": "FAG 6200-2RSR-C3 — Increased Clearance Ball Bearing",
+      "brand": "FAG",
+      "price": 0,
+      "category": "BALL BEARINGS",
+      "image": "https://image.made-in-china.com/202f0j00tKcbvBAspOpj/FAG-SKF-Koyo-NTN-NSK-Quality-Assurance-6202-6206-6207-6208-Deep-Groove-Ball-Bearing.jpg",
+      "sourceUrl": "https://www.schaeffler.com/",
+      "tags": ["6200-2RSR-C3", "C3", "DOUBLE SEALED", "10x30x9 mm", "DEEP GROOVE"]
+    }
+  ]
+}
