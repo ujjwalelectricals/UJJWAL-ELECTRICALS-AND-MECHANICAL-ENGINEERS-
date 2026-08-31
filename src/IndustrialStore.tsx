@@ -13,19 +13,7 @@ export default function IndustrialStore(){
  const [cart,setCart]=useState<CartLine[]>(()=>readLocal<CartLine[]>(CART_KEY,[])); const [collection,setCollection]=useState<string[]>(()=>readLocal<string[]>(COLLECTION_KEY,[]));
  const [selected,setSelected]=useState<Product|null>(null); const [gallery,setGallery]=useState(0); const [modalQty,setModalQty]=useState(1); const [loading,setLoading]=useState(true); const [error,setError]=useState(''); const [cartOpen,setCartOpen]=useState(false); const [visibleCount,setVisibleCount]=useState(32); const searchRef=useRef<HTMLInputElement>(null);
  useEffect(()=>localStorage.setItem(CART_KEY,JSON.stringify(cart)),[cart]); useEffect(()=>localStorage.setItem(COLLECTION_KEY,JSON.stringify(collection)),[collection]);
- useEffect(()=>{
-  let alive=true;
-  Promise.all([
-   fetch(`${import.meta.env.BASE_URL}industrial-products.json`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error();return r.json() as Promise<Catalog>}),
-   fetch(`${import.meta.env.BASE_URL}bearings-catalog.json`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error();return r.json() as Promise<Catalog>})
-  ]).then(([industrial,bearings])=>{
-   if(!alive)return;
-   const seen=new Set<string>();
-   const products=[...(bearings.products||[]),...(industrial.products||[])].filter(product=>{if(!product?.id||seen.has(product.id))return false;seen.add(product.id);return Boolean(product.image&&product.name)});
-   setCatalog({syncedAt:industrial.syncedAt,products});setError('');
-  }).catch(()=>{if(alive)setError('The industrial catalog is temporarily unavailable. Please refresh after deployment finishes.')}).finally(()=>{if(alive)setLoading(false)});
-  return()=>{alive=false};
- },[]);
+ useEffect(()=>{let alive=true;Promise.all([fetch(`${import.meta.env.BASE_URL}industrial-products.json`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error();return r.json() as Promise<Catalog>}),fetch(`${import.meta.env.BASE_URL}bearings-catalog.json`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error();return r.json() as Promise<Catalog>})]).then(([industrial,bearings])=>{if(!alive)return;const seen=new Set<string>();const products=[...(bearings.products||[]),...(industrial.products||[])].filter(p=>{if(!p?.id||seen.has(p.id)||!p.image||!p.name)return false;/* Never request the old supplier host for any displayed product asset. */const urls=[p.image,...(p.images||[])];if(urls.some(url=>/jaibros\.com/i.test(url)))return false;seen.add(p.id);return true});setCatalog({syncedAt:industrial.syncedAt,products});setError('')}).catch(()=>{if(alive)setError('The industrial catalog is temporarily unavailable. Please refresh after deployment finishes.')}).finally(()=>{if(alive)setLoading(false)});return()=>{alive=false}},[]);
  useEffect(()=>{const k=(e:KeyboardEvent)=>{const tag=(document.activeElement as HTMLElement|null)?.tagName||'';if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(tag)){e.preventDefault();searchRef.current?.focus()}if(e.key==='Escape'){setSelected(null);setCartOpen(false)}};window.addEventListener('keydown',k);return()=>window.removeEventListener('keydown',k)},[]);
  const filtered=useMemo(()=>{const q=query.trim().toLowerCase();let list=catalog.products.filter(p=>{const c=category==='ALL'||p.category===category;const h=`${p.name} ${p.brand} ${p.category} ${(p.tags||[]).join(' ')}`.toLowerCase();return c&&(!q||h.includes(q))});if(sort==='price-low')list=[...list].sort((a,b)=>(a.price||Infinity)-(b.price||Infinity));if(sort==='price-high')list=[...list].sort((a,b)=>(b.price||-1)-(a.price||-1));return list},[catalog.products,category,query,sort]);
  useEffect(()=>setVisibleCount(32),[category,query,sort]);
