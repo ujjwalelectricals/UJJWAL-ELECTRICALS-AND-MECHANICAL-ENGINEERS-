@@ -1,0 +1,55 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const root = process.cwd();
+const required = [
+  'public/hero-bearing-6200.svg',
+  'public/product-image-fallback.svg',
+  'public/ue-mark.svg',
+  'public/bearings-catalog.json',
+  'public/jaibros-products.json',
+  'public/robots.txt',
+  'public/sitemap.xml',
+  'public/site.webmanifest',
+];
+
+const failures = [];
+for (const rel of required) {
+  if (!fs.existsSync(path.join(root, rel))) failures.push(`Missing required asset: ${rel}`);
+}
+
+for (const rel of ['public/bearings-catalog.json', 'public/jaibros-products.json']) {
+  const file = path.join(root, rel);
+  if (!fs.existsSync(file)) continue;
+  try {
+    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (!Array.isArray(data.products)) failures.push(`${rel}: products must be an array`);
+    for (const product of data.products ?? []) {
+      if (!product?.id || !product?.name || !product?.image) {
+        failures.push(`${rel}: product is missing id/name/image`);
+        break;
+      }
+      const urls = [product.image, ...(product.images ?? [])];
+      if (urls.some((url) => /jaibros\.com/i.test(String(url)))) {
+        failures.push(`${rel}: supplier image URL detected for ${product.id}`);
+        break;
+      }
+    }
+  } catch (error) {
+    failures.push(`${rel}: invalid JSON (${error.message})`);
+  }
+}
+
+const app = fs.readFileSync(path.join(root, 'src/App.tsx'), 'utf8');
+if (!app.includes('BASE=import.meta.env.BASE_URL')) failures.push('src/App.tsx: BASE_URL asset guard missing');
+if (!app.includes('product-image-fallback.svg')) failures.push('src/App.tsx: fallback image reference missing');
+if (!app.includes("installImageGuard()")) failures.push('src/App.tsx: global image guard not installed');
+
+if (failures.length) {
+  console.error('ASSET AUDIT FAILED');
+  for (const failure of failures) console.error(`- ${failure}`);
+  process.exit(1);
+}
+
+console.log('ASSET AUDIT PASSED');
+console.log(`Verified ${required.length} required local assets and catalog invariants.`);
