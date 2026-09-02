@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ujjwalelectricals.github.io/UJJWAL-ELECTRICALS-AND-MECHANICAL-ENGINEERS-/sitemap.xml
