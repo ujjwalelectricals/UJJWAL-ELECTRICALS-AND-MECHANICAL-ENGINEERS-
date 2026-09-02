@@ -2,59 +2,64 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/ue-mark.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#070a0d" />
-    <meta name="description" content="Ujjwal Electricals & Mechanical Engineers Enterprises — CNC service, maintenance, electrical and mechanical engineering solutions in Siddharth Vihar, Ghaziabad. GSTIN 09CWDPD3387A1ZS. IEC-CWDPD3387A." />
-    <meta name="keywords" content="Ujjwal Electricals, Mechanical Engineers, CNC service, CNC maintenance, industrial electrical engineering, industrial mechanical engineering, Ghaziabad, Siddharth Vihar" />
-    <meta name="author" content="Ujjwal Electricals & Mechanical Engineers Enterprises" />
-    <meta property="og:title" content="Ujjwal Electricals & Mechanical Engineers Enterprises" />
-    <meta property="og:description" content="CNC service, maintenance and industrial electrical & mechanical engineering solutions." />
+    <meta name="theme-color" content="#f4f6f5" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content="UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE — CNC service, VMC tooling, industrial electrical and mechanical engineering, bearings and machine-shop components in Ghaziabad, India." />
+    <meta name="keywords" content="CNC service Ghaziabad, VMC tooling, BT40 holders, ISO40 holders, ER collets, ball bearings, industrial electrical engineering, mechanical engineering, machine tools" />
+    <meta name="author" content="UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE" />
+    <meta property="og:title" content="UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE" />
+    <meta property="og:description" content="CNC service, VMC tooling, bearings and industrial engineering support in Ghaziabad." />
     <meta property="og:type" content="website" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-    <title>Ujjwal Electricals & Mechanical Engineers Enterprises | CNC Service & Maintenance</title>
+    <meta property="og:url" content="https://ujjwalelectricals.github.io/UJJWAL-ELECTRICALS-AND-MECHANICAL-ENGINEERS-/" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="icon" type="image/svg+xml" href="/ue-mark.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE | CNC, VMC, Bearings & Industrial Engineering</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
-        "name": "Ujjwal Electricals & Mechanical Engineers Enterprises",
-        "description": "CNC service, maintenance and industrial electrical and mechanical engineering solutions.",
+        "name": "UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE",
+        "description": "CNC service, VMC tooling, bearings and industrial electrical and mechanical engineering support.",
         "telephone": ["+91-9971276078", "+91-9910228978"],
-        "email": ["ujjwalelectricalengineers@gmail.com"],
+        "email": "ujjwalelectricalengineers@gmail.com",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Sector-9, H.No. 2313, Block-51, Siddharth Vihar",
           "addressLocality": "Ghaziabad",
           "postalCode": "201009",
           "addressCountry": "IN"
-        }
+        },
+        "areaServed": "India"
       }
+    </script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.UE_ANALYTICS_ID = '';
+      window.UE_COOKIE_CONSENT = localStorage.getItem('ue-analytics-consent') === 'granted';
+      function loadAnalytics(){
+        if(!window.UE_ANALYTICS_ID || !window.UE_COOKIE_CONSENT) return;
+        if(document.getElementById('ue-analytics')) return;
+        const s=document.createElement('script'); s.id='ue-analytics'; s.async=true;
+        s.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(window.UE_ANALYTICS_ID);
+        document.head.appendChild(s); window.gtag=function(){dataLayer.push(arguments)};
+        gtag('js',new Date()); gtag('config',window.UE_ANALYTICS_ID,{anonymize_ip:true});
+      }
+      function analyticsBanner(){
+        if(!window.UE_ANALYTICS_ID || window.UE_COOKIE_CONSENT || localStorage.getItem('ue-analytics-consent')) return;
+        const bar=document.createElement('aside'); bar.setAttribute('role','dialog'); bar.setAttribute('aria-label','Analytics consent');
+        bar.style.cssText='position:fixed;left:18px;right:18px;bottom:18px;z-index:9999;background:#12181b;color:#fff;padding:16px 18px;border-radius:16px;box-shadow:0 18px 55px rgba(0,0,0,.22);font:13px/1.5 Segoe UI,sans-serif;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap';
+        bar.innerHTML='<span>We use optional analytics to understand site traffic. No analytics loads unless you consent.</span><span style="display:flex;gap:8px"><button id="ue-deny" style="padding:9px 12px;border:1px solid #59656b;background:transparent;color:#fff;border-radius:9px;cursor:pointer">Decline</button><button id="ue-accept" style="padding:9px 12px;border:0;background:#c88708;color:#fff;border-radius:9px;cursor:pointer">Allow analytics</button></span>';
+        document.body.appendChild(bar);
+        document.getElementById('ue-deny').onclick=()=>{localStorage.setItem('ue-analytics-consent','denied');bar.remove()};
+        document.getElementById('ue-accept').onclick=()=>{localStorage.setItem('ue-analytics-consent','granted');window.UE_COOKIE_CONSENT=true;bar.remove();loadAnalytics()};
+      }
+      window.addEventListener('load',()=>{loadAnalytics();analyticsBanner()});
     </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      (() => {
-        const COMPANY = 'UJJWAL ELECTRICALS & MECHANICAL ENGINEERS ENTERPRISES';
-        const EMAIL = 'ujjwalelectricalengineers@gmail.com';
-        const patch = () => {
-          document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
-            link.setAttribute('href', `mailto:${EMAIL}`);
-          });
-          const brand = document.querySelector('.site-light-brand');
-          if (brand) {
-            const name = brand.querySelector('b');
-            const suffix = brand.querySelector('small');
-            if (name) name.textContent = COMPANY;
-            if (suffix) suffix.textContent = '';
-          }
-        };
-        patch();
-        new MutationObserver(patch).observe(document.body, { childList: true, subtree: true });
-      })();
-    </script>
   </body>
 </html>
