@@ -1,7 +1,13 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { ContactShadows, Float, Sparkles } from '@react-three/drei';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import * as THREE from 'three';
+import {
+  ACESFilmicToneMapping,
+  Color,
+  MathUtils,
+  ShaderMaterial,
+  SRGBColorSpace,
+  type Group,
+} from 'three';
 
 const MOBILE_BREAKPOINT = 820;
 
@@ -12,7 +18,7 @@ function Metal({ color = '#7c8992', roughness = 0.26, metalness = 0.88, emissive
 }
 
 function useScenePulse() {
-  const ref = useRef<THREE.Group>(null);
+  const ref = useRef<Group>(null);
   useFrame((_, delta) => {
     if (document.hidden || !ref.current) return;
     ref.current.rotation.y += delta * 0.12;
@@ -21,10 +27,10 @@ function useScenePulse() {
 }
 
 function ScanlineRing({ mobile }: { mobile: boolean }) {
-  const material = useMemo(() => new THREE.ShaderMaterial({
+  const material = useMemo(() => new ShaderMaterial({
     transparent: true,
     depthWrite: false,
-    uniforms: { uTime: { value: 0 }, uColor: { value: new THREE.Color('#0ea5e9') } },
+    uniforms: { uTime: { value: 0 }, uColor: { value: new Color('#0ea5e9') } },
     vertexShader: `varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
     fragmentShader: `uniform float uTime; uniform vec3 uColor; varying vec2 vUv; void main(){float wave=sin((vUv.y+uTime*0.08)*48.0)*0.5+0.5;float band=smoothstep(0.89,1.0,wave);float edge=smoothstep(0.50,0.03,abs(vUv.x-0.5));gl_FragColor=vec4(uColor,band*edge*${mobile ? 0.22 : 0.34});}`,
   }), [mobile]);
@@ -55,7 +61,7 @@ function BearingAssembly({ position, mobile }: { position: [number, number, numb
 }
 
 function Spindle({ speed }: { speed: number }) {
-  const ref = useRef<THREE.Group>(null);
+  const ref = useRef<Group>(null);
   useFrame((_, delta) => { if (!document.hidden && ref.current) ref.current.rotation.z += delta * speed; });
   return (
     <group ref={ref} rotation={[0, Math.PI / 2, 0]}>
@@ -70,12 +76,12 @@ function Spindle({ speed }: { speed: number }) {
 }
 
 function CNCAssembly({ mobile }: { mobile: boolean }) {
-  const group = useRef<THREE.Group>(null);
-  const carriage = useRef<THREE.Group>(null);
+  const group = useRef<Group>(null);
+  const carriage = useRef<Group>(null);
   useFrame(({ pointer, clock }, delta) => {
     if (document.hidden || !group.current || !carriage.current) return;
-    group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, pointer.x * 0.13, 0.04);
-    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, -pointer.y * 0.045, 0.04);
+    group.current.rotation.y = MathUtils.lerp(group.current.rotation.y, pointer.x * 0.13, 0.04);
+    group.current.rotation.x = MathUtils.lerp(group.current.rotation.x, -pointer.y * 0.045, 0.04);
     group.current.position.y = Math.sin(clock.elapsedTime * 0.75) * 0.025;
     carriage.current.position.x = Math.sin(clock.elapsedTime * 0.55) * 0.35;
   });
@@ -125,34 +131,39 @@ function Director({ mobile, reducedMotion }: { mobile: boolean; reducedMotion: b
     if (frame > 34) slow.current += delta; else slow.current = Math.max(0, slow.current - delta * 0.5);
     if (!qualityDrop && slow.current > 2) setQualityDrop(true);
     time.current += delta;
-    current.current.x = THREE.MathUtils.lerp(current.current.x, target.current.x, 0.035);
-    current.current.y = THREE.MathUtils.lerp(current.current.y, target.current.y, 0.035);
+    current.current.x = MathUtils.lerp(current.current.x, target.current.x, 0.035);
+    current.current.y = MathUtils.lerp(current.current.y, target.current.y, 0.035);
     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const progress = THREE.MathUtils.clamp(window.scrollY / maxScroll, 0, 1);
+    const progress = MathUtils.clamp(window.scrollY / maxScroll, 0, 1);
     const idle = reducedMotion ? 0 : Math.sin(time.current * 0.4) * 0.05;
     const x = current.current.x * (mobile ? 0.25 : 0.48) + Math.sin(progress * Math.PI * 0.6) * 0.14;
     const y = 0.22 + current.current.y * (mobile ? 0.10 : 0.18) + idle;
-    camera.position.x = THREE.MathUtils.lerp(camera.position.x, x, 0.055);
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, y, 0.055);
-    camera.position.z = THREE.MathUtils.lerp(camera.position.z, mobile ? (qualityDrop ? 9.5 : 8.9) : (qualityDrop ? 8.4 : 7.8), 0.05);
+    camera.position.x = MathUtils.lerp(camera.position.x, x, 0.055);
+    camera.position.y = MathUtils.lerp(camera.position.y, y, 0.055);
+    camera.position.z = MathUtils.lerp(camera.position.z, mobile ? (qualityDrop ? 9.5 : 8.9) : (qualityDrop ? 8.4 : 7.8), 0.05);
     camera.lookAt(0, -0.25 + progress * 0.25, 0);
   });
   return null;
 }
 
 function SceneContent({ mobile, reducedMotion }: { mobile: boolean; reducedMotion: boolean }) {
+  const float = useRef<Group>(null);
+  useFrame((_, delta) => {
+    if (document.hidden || reducedMotion || !float.current) return;
+    float.current.rotation.y += delta * 0.008;
+    float.current.rotation.x = Math.sin(performance.now() * 0.00035) * 0.018;
+    float.current.position.y = Math.sin(performance.now() * 0.00065) * 0.045;
+  });
   return <>
     <ambientLight intensity={mobile ? 1.0 : 0.82} color="#ffffff" />
     <hemisphereLight args={['#f8fbfc', '#17242c', mobile ? 0.65 : 0.80]} />
     <directionalLight position={[4, 8, 6]} intensity={mobile ? 1.7 : 2.4} color="#fff1dc" castShadow={!mobile} shadow-mapSize-width={mobile ? 0 : 1536} shadow-mapSize-height={mobile ? 0 : 1536} shadow-bias={-0.0003} />
     <spotLight position={[-4, 5, 4]} intensity={mobile ? 2 : 3.8} distance={14} angle={0.55} penumbra={0.8} color="#38bdf8" />
     <pointLight position={[2.5, 1.5, 4]} intensity={mobile ? 1.8 : 3.6} distance={8} color="#f59e0b" />
-    <Float speed={reducedMotion ? 0 : 0.65} rotationIntensity={reducedMotion ? 0 : 0.07} floatIntensity={reducedMotion ? 0 : 0.14}>
+    <group ref={float}>
       <CNCAssembly mobile={mobile} />
-    </Float>
+    </group>
     <ScanlineRing mobile={mobile} />
-    {!mobile && !reducedMotion && <Sparkles count={62} scale={[18, 10, 14]} size={0.65} speed={0.11} opacity={0.14} />}
-    {!mobile && <ContactShadows position={[0, -1.92, 0]} opacity={0.26} scale={8} blur={2.7} far={5.5} resolution={256} />}
     <Director mobile={mobile} reducedMotion={reducedMotion} />
   </>;
 }
@@ -169,7 +180,7 @@ export default function IndustrialScene() {
     return () => { window.removeEventListener('resize', resize); media?.removeEventListener?.('change', motion); };
   }, []);
   return <div className="industrial-scene-canvas" aria-hidden="true">
-    <Canvas dpr={mobile ? [1, 1.15] : [1, 1.7]} camera={{ position: [0, 0.2, mobile ? 8.9 : 7.8], fov: mobile ? 42 : 48, near: 0.1, far: 40 }} shadows="soft" gl={{ antialias: !mobile, alpha: true, powerPreference: 'high-performance' }} onCreated={({ gl }) => { gl.outputColorSpace = THREE.SRGBColorSpace; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.05; }}>
+    <Canvas dpr={mobile ? [1, 1.15] : [1, 1.7]} camera={{ position: [0, 0.2, mobile ? 8.9 : 7.8], fov: mobile ? 42 : 48, near: 0.1, far: 40 }} shadows="soft" gl={{ antialias: !mobile, alpha: true, powerPreference: 'high-performance' }} onCreated={({ gl }) => { gl.outputColorSpace = SRGBColorSpace; gl.toneMapping = ACESFilmicToneMapping; gl.toneMappingExposure = 1.05; }}>
       <SceneContent mobile={mobile} reducedMotion={reducedMotion} />
     </Canvas>
   </div>;
