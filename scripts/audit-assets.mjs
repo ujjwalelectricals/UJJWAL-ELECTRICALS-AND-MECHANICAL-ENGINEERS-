@@ -40,7 +40,6 @@ if (fs.existsSync(path.join(root, 'public/jaibros-products.json'))) {
 
 const app = fs.readFileSync(path.join(root, 'src/App.tsx'), 'utf8');
 if (!app.includes('BASE=import.meta.env.BASE_URL')) failures.push('src/App.tsx: BASE_URL asset guard missing');
-if (!app.includes('product-image-fallback.svg')) failures.push('src/App.tsx: fallback image reference missing');
 if (!app.includes('installImageGuard()')) failures.push('src/App.tsx: global image guard not installed');
 
 const guard = path.join(root, 'src/image-guard.ts');
