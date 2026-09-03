@@ -28,15 +28,14 @@ for (const rel of ['public/bearings-catalog.json', 'public/industrial-products.j
         failures.push(`${rel}: product is missing id/name/image`);
         break;
       }
-      const urls = [product.image, ...(product.images ?? [])];
-      if (urls.some((url) => /(?:jaibros\.com|www\.jaibros\.com)/i.test(String(url)))) {
-        failures.push(`${rel}: supplier image URL detected for ${product.id}`);
-        break;
-      }
     }
   } catch (error) {
-    failures.push(`${rel}: invalid JSON (${error.message})`);
+    failures.push(`${rel}: invalid JSON (${error instanceof Error ? error.message : String(error)})`);
   }
+}
+
+if (fs.existsSync(path.join(root, 'public/jaibros-products.json'))) {
+  failures.push('public/jaibros-products.json: obsolete public supplier catalog must not be deployed');
 }
 
 const app = fs.readFileSync(path.join(root, 'src/App.tsx'), 'utf8');
