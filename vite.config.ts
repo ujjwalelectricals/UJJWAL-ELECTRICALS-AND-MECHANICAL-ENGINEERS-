@@ -2,9 +2,14 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
 
+const nodeGlobal = globalThis as typeof globalThis & {
+  process?: { env?: Record<string, string | undefined> };
+};
+const isVercel = nodeGlobal.process?.env?.VERCEL === '1';
+
 export default defineConfig({
   plugins: [react()],
-  base: '/UJJWAL-ELECTRICALS-AND-MECHANICAL-ENGINEERS-/',
+  base: isVercel ? '/' : '/UJJWAL-ELECTRICALS-AND-MECHANICAL-ENGINEERS-/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
