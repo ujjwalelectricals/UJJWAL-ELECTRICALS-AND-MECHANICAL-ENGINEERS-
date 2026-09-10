@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import NextLevelExperience from './NextLevelExperience';
 
-type Stat = { value: number; suffix: string; label: string };
+ type Stat = { value: number; suffix: string; label: string };
 
 const stats: Stat[] = [
   { value: 6, suffix: '+', label: 'CORE SERVICES' },
@@ -77,58 +78,56 @@ export default function TwentyFirstExperience() {
   }, []);
 
   return (
-    <section ref={rootRef} className="twentyfirst-experience" aria-label="Interactive engineering highlights">
-      <div className="twentyfirst-orb" aria-hidden="true" />
-      <div className="twentyfirst-grid" aria-hidden="true" />
-      <div className="twentyfirst-progress" aria-hidden="true"><span /></div>
-
-      <div className="twentyfirst-head">
-        <div>
-          <span className="section-code">07 / INTERACTIVE SYSTEM</span>
-          <h2>Engineering, <em>with depth.</em></h2>
-        </div>
-        <p>Inspired by the interaction-first spirit of modern component libraries such as 21st.dev: purposeful motion, spotlight surfaces, bento layouts and crisp micro-interactions—adapted to an industrial engineering brand.</p>
-      </div>
-
-      <div className="twentyfirst-bento">
-        {cards.map((card, index) => (
-          <article key={card.code} className={`twentyfirst-card card-${index + 1}`}>
-            <span>{card.code}</span>
-            <div className="twentyfirst-card-glow" aria-hidden="true" />
-            <h3>{card.title}</h3>
-            <p>{card.copy}</p>
-            <a href={index === 1 ? '#shop' : index === 2 ? '#services' : '#home'}>Explore <b>↗</b></a>
-          </article>
-        ))}
-      </div>
-
-      <div ref={statsRef} className="twentyfirst-stats" aria-label="Company highlights">
-        {stats.map((stat, index) => (
-          <div key={stat.label} className="twentyfirst-stat">
-            <strong>{statsVisible ? Math.round((stat.value * count) / 100) : 0}{stat.suffix}</strong>
-            <span>{stat.label}</span>
+    <>
+      <section ref={rootRef} className="twentyfirst-experience" aria-label="Interactive engineering highlights">
+        <div className="twentyfirst-orb" aria-hidden="true" />
+        <div className="twentyfirst-grid" aria-hidden="true" />
+        <div className="twentyfirst-progress" aria-hidden="true"><span /></div>
+        <div className="twentyfirst-head">
+          <div>
+            <span className="section-code">07 / INTERACTIVE SYSTEM</span>
+            <h2>Engineering, <em>with depth.</em></h2>
           </div>
-        ))}
-      </div>
-
-      <div className="twentyfirst-marquee" aria-hidden="true">
-        <div className="twentyfirst-marquee-track">
-          <span>PRECISION</span><i>•</i><span>CNC / VMC</span><i>•</i><span>BEARINGS</span><i>•</i><span>TOOLING</span><i>•</i><span>ENGINEERING</span><i>•</i>
-          <span>PRECISION</span><i>•</i><span>CNC / VMC</span><i>•</i><span>BEARINGS</span><i>•</i><span>TOOLING</span><i>•</i><span>ENGINEERING</span><i>•</i>
+          <p>Inspired by the interaction-first spirit of modern component libraries: purposeful motion, spotlight surfaces, bento layouts and crisp micro-interactions—adapted to an industrial engineering brand.</p>
         </div>
-      </div>
-
-      <div className="twentyfirst-cta">
-        <div>
-          <span className="section-code">READY WHEN YOU ARE</span>
-          <h3>Bring the next machine problem.</h3>
-          <p>Find a component, review the service scope, or start an enquiry in one motion.</p>
+        <div className="twentyfirst-bento">
+          {cards.map((card, index) => (
+            <article key={card.code} className={`twentyfirst-card card-${index + 1}`}>
+              <span>{card.code}</span>
+              <div className="twentyfirst-card-glow" aria-hidden="true" />
+              <h3>{card.title}</h3>
+              <p>{card.copy}</p>
+              <a href={index === 1 ? '#shop' : index === 2 ? '#services' : '#home'}>Explore <b>↗</b></a>
+            </article>
+          ))}
         </div>
-        <div className="twentyfirst-cta-actions">
-          <a className="twentyfirst-shimmer" href="#shop">Open the shop <b>→</b></a>
-          <a className="twentyfirst-ghost" href="#services">View services</a>
+        <div ref={statsRef} className="twentyfirst-stats" aria-label="Company highlights">
+          {stats.map((stat) => (
+            <div key={stat.label} className="twentyfirst-stat">
+              <strong>{statsVisible ? Math.round((stat.value * count) / 100) : 0}{stat.suffix}</strong>
+              <span>{stat.label}</span>
+            </div>
+          ))}
         </div>
-      </div>
-    </section>
+        <div className="twentyfirst-marquee" aria-hidden="true">
+          <div className="twentyfirst-marquee-track">
+            <span>PRECISION</span><i>•</i><span>CNC / VMC</span><i>•</i><span>BEARINGS</span><i>•</i><span>TOOLING</span><i>•</i><span>ENGINEERING</span><i>•</i>
+            <span>PRECISION</span><i>•</i><span>CNC / VMC</span><i>•</i><span>BEARINGS</span><i>•</i><span>TOOLING</span><i>•</i><span>ENGINEERING</span><i>•</i>
+          </div>
+        </div>
+        <div className="twentyfirst-cta">
+          <div>
+            <span className="section-code">READY WHEN YOU ARE</span>
+            <h3>Bring the next machine problem.</h3>
+            <p>Find a component, review the service scope, or start an enquiry in one motion.</p>
+          </div>
+          <div className="twentyfirst-cta-actions">
+            <a className="twentyfirst-shimmer" href="#shop">Open the shop <b>→</b></a>
+            <a className="twentyfirst-ghost" href="#services">View services</a>
+          </div>
+        </div>
+      </section>
+      <NextLevelExperience />
+    </>
   );
 }
