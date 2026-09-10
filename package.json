@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "sync:catalog": "node scripts/sync-jaibros.mjs",
     "audit:assets": "node scripts/audit-assets.mjs",
-    "build": "npm run sync:catalog && npm run audit:assets && vite build",
+    "build": "npm run audit:assets && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
