@@ -86,7 +86,7 @@ export default function TwentyFirstExperience() {
           <span className="section-code">07 / INTERACTIVE SYSTEM</span>
           <h2>Engineering, <em>with depth.</em></h2>
         </div>
-        <p>Inspired by the interaction-first spirit of modern component libraries: purposeful motion, spotlight surfaces, bento layouts and crisp micro-interactions—adapted to an industrial engineering brand.</p>
+        <p>Purposeful motion, spotlight surfaces, bento layouts and crisp micro-interactions—adapted to an industrial engineering brand.</p>
       </div>
       <div className="twentyfirst-bento">
         {cards.map((card, index) => (
