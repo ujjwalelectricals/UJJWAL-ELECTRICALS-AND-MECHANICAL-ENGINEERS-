@@ -9,6 +9,7 @@ import {
   SRGBColorSpace,
   type Group,
 } from 'three';
+import IndustrialPostFX from './IndustrialPostFX';
 
 const MOBILE_BREAKPOINT = 820;
 type QualityTier = 'high' | 'low';
@@ -194,6 +195,7 @@ function SceneContent({ mobile, reducedMotion, quality }: { mobile: boolean; red
     {!mobile && quality === 'high' && <ContactShadows position={[0, -1.70, 0]} opacity={0.24} scale={8.5} blur={2.6} far={5} resolution={512} />}
     <ScanlineRing mobile={mobile} quality={quality} />
     <Director mobile={mobile} reducedMotion={reducedMotion} />
+    <IndustrialPostFX mobile={mobile} quality={quality} reducedMotion={reducedMotion} />
     <Preload all />
   </>;
 }
