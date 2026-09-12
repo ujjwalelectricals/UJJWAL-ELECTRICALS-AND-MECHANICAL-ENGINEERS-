@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
- type Stat = { value: number; suffix: string; label: string };
+type Stat = { value: number; suffix: string; label: string };
 
 const stats: Stat[] = [
   { value: 6, suffix: '+', label: 'CORE SERVICES' },
@@ -42,7 +42,7 @@ export default function TwentyFirstExperience() {
 
   useEffect(() => {
     const root = rootRef.current;
-    if (!root) return;
+    if (!root || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     let raf = 0;
     let x = 50;
     let y = 30;
@@ -52,8 +52,8 @@ export default function TwentyFirstExperience() {
       raf = 0;
     };
     const onMove = (event: PointerEvent) => {
-      x = (event.clientX / window.innerWidth) * 100;
-      y = (event.clientY / window.innerHeight) * 100;
+      x = (event.clientX / Math.max(1, window.innerWidth)) * 100;
+      y = (event.clientY / Math.max(1, window.innerHeight)) * 100;
       if (!raf) raf = requestAnimationFrame(update);
     };
     window.addEventListener('pointermove', onMove, { passive: true });
@@ -65,7 +65,10 @@ export default function TwentyFirstExperience() {
 
   useEffect(() => {
     const target = statsRef.current;
-    if (!target) return;
+    if (!target || typeof IntersectionObserver === 'undefined') {
+      setStatsVisible(true);
+      return;
+    }
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         setStatsVisible(true);
