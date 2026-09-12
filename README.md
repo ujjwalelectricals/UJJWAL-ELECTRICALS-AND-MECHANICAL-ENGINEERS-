@@ -33,6 +33,20 @@ The site uses React Three Fiber and Three.js for interactive industrial scenes. 
 
 The goal is not to maximize visual effects at the expense of usability; the goal is to make the engineering content feel physical while preserving responsiveness.
 
+## 3D asset optimization
+
+Heavy `.glb` and `.gltf` files can be optimized with the repository's Node.js pipeline. The optimizer uses the official **glTF Transform CLI** and keeps original assets safe by default. It performs structural cleanup, duplicate-data removal, WebP texture compression, Draco geometry compression, `.gltf` → `.glb` conversion, size reporting and a 3 MB warning target. The project does **not** add the optimizer to the normal `build` command because downloading/transforming 3D assets on every deployment would unnecessarily slow or destabilize static hosting.
+
+```bash
+# Optimize into public/models-optimized without touching originals
+npm run assets:optimize
+
+# For already-GLB assets only: replace the source after creating a .backup copy
+npm run assets:optimize:in-place
+```
+
+The optimizer pins `@gltf-transform/cli@4.5.0` for reproducible results. glTF Transform officially supports `optimize`, Draco compression, WebP texture compression and GLB output. citeturn895002search0turn331134search0
+
 ## Company
 
 **UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE**  
