@@ -27,16 +27,27 @@ function useAdaptiveQuality(mobile: boolean) {
       setTier('low');
       return;
     }
-    setTier('high');
     let raf = 0;
     let last = performance.now();
-    let underBudgetMs = 0;
+    let slowFrames = 0;
+    let recoveryFrames = 0;
     const tick = (now: number) => {
       const frameMs = now - last;
       last = now;
-      if (frameMs > 18.2) underBudgetMs += frameMs;
-      else underBudgetMs = Math.max(0, underBudgetMs - frameMs * 0.45);
-      if (underBudgetMs > 900) setTier('low');
+      if (frameMs > 18.2) {
+        slowFrames += 1;
+        recoveryFrames = 0;
+      } else {
+        recoveryFrames += 1;
+        slowFrames = Math.max(0, slowFrames - 1);
+      }
+      if (slowFrames >= 45) {
+        setTier('low');
+        slowFrames = 0;
+      } else if (recoveryFrames >= 180) {
+        setTier('high');
+        recoveryFrames = 0;
+      }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -112,13 +123,13 @@ function CNCAssembly({ mobile, reducedMotion, quality }: { mobile: boolean; redu
     if (document.hidden || reducedMotion || !group.current || !carriage.current) return;
     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     const scrollProgress = MathUtils.clamp(window.scrollY / maxScroll, 0, 1);
-    const pointerX = MathUtils.lerp(0, pointer.x, mobile ? 0.35 : 0.65);
-    const pointerY = MathUtils.lerp(0, -pointer.y, mobile ? 0.18 : 0.35);
-    group.current.rotation.y = MathUtils.lerp(group.current.rotation.y, pointerX * 0.13, 0.04);
-    group.current.rotation.x = MathUtils.lerp(group.current.rotation.x, pointerY * 0.045, 0.04);
-    group.current.rotation.z = MathUtils.lerp(group.current.rotation.z, scrollProgress * Math.PI * 2, 0.03);
-    group.current.position.y = Math.sin(clock.elapsedTime * 0.75) * (quality === 'low' ? 0.015 : 0.025);
-    carriage.current.position.x = Math.sin(clock.elapsedTime * 0.55) * (quality === 'low' ? 0.18 : 0.35);
+    const pointerX = MathUtils.lerp(0, pointer.x, mobile ? 0.22 : 0.48);
+    const pointerY = MathUtils.lerp(0, -pointer.y, mobile ? 0.10 : 0.22);
+    group.current.rotation.y = MathUtils.lerp(group.current.rotation.y, pointerX * 0.13, 0.045);
+    group.current.rotation.x = MathUtils.lerp(group.current.rotation.x, pointerY * 0.045, 0.045);
+    group.current.rotation.z = MathUtils.lerp(group.current.rotation.z, scrollProgress * Math.PI * 2, 0.025);
+    group.current.position.y = Math.sin(clock.elapsedTime * 0.75) * (quality === 'low' ? 0.012 : 0.02);
+    carriage.current.position.x = Math.sin(clock.elapsedTime * 0.55) * (quality === 'low' ? 0.14 : 0.30);
   });
   return (
     <Center>
@@ -138,7 +149,7 @@ function CNCAssembly({ mobile, reducedMotion, quality }: { mobile: boolean; redu
         <mesh position={[1.18, 0.82, 1.04]} rotation={[0, Math.PI / 2, 0]} castShadow><cylinderGeometry args={[0.30, 0.30, 1.06, 32]} /><Metal color="#c4ccd0" roughness={0.10} /></mesh>
         <mesh position={[2.27, 0.46, 1.22]} rotation={[0.08, -0.18, 0]} castShadow><boxGeometry args={[0.50, 1.12, 0.16]} /><Metal color="#101920" roughness={0.22} /></mesh>
         <mesh position={[2.27, 0.64, 1.30]} rotation={[0.08, -0.18, 0]}><boxGeometry args={[0.31, 0.37, 0.025]} /><meshStandardMaterial color="#06141a" emissive="#38bdf8" emissiveIntensity={0.65} roughness={0.18} metalness={0.65} /></mesh>
-        <pointLight position={[-0.15, 0.28, 1.75]} intensity={mobile ? 3 : quality === 'low' ? 3.5 : 5} distance={4.6} color="#38bdf8" />
+        <pointLight position={[-0.15, 0.28, 1.75]} intensity={mobile ? 2.6 : quality === 'low' ? 3.2 : 4.6} distance={4.6} color="#38bdf8" />
       </group>
     </Center>
   );
@@ -164,12 +175,12 @@ function Director({ mobile, reducedMotion }: { mobile: boolean; reducedMotion: b
     current.current.y = MathUtils.lerp(current.current.y, target.current.y, 0.035);
     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     const progress = MathUtils.clamp(window.scrollY / maxScroll, 0, 1);
-    const idle = reducedMotion ? 0 : Math.sin(time.current * 0.4) * 0.05;
-    const x = current.current.x * (mobile ? 0.25 : 0.48) + Math.sin(progress * Math.PI * 0.6) * 0.14;
-    const y = 0.22 + current.current.y * (mobile ? 0.10 : 0.18) + idle;
-    camera.position.x = MathUtils.lerp(camera.position.x, x, 0.055);
-    camera.position.y = MathUtils.lerp(camera.position.y, y, 0.055);
-    camera.position.z = MathUtils.lerp(camera.position.z, mobile ? 8.9 : 7.8, 0.05);
+    const idle = reducedMotion ? 0 : Math.sin(time.current * 0.4) * 0.04;
+    const x = current.current.x * (mobile ? 0.20 : 0.42) + Math.sin(progress * Math.PI * 0.6) * 0.14;
+    const y = 0.22 + current.current.y * (mobile ? 0.08 : 0.16) + idle;
+    camera.position.x = MathUtils.lerp(camera.position.x, x, 0.06);
+    camera.position.y = MathUtils.lerp(camera.position.y, y, 0.06);
+    camera.position.z = MathUtils.lerp(camera.position.z, mobile ? 8.9 : 7.8, 0.055);
     camera.lookAt(0, -0.25 + progress * 0.25, 0);
   });
   return null;
@@ -186,9 +197,10 @@ function SceneContent({ mobile, reducedMotion, quality }: { mobile: boolean; red
   return <>
     <ambientLight intensity={mobile ? 0.95 : 0.78} color="#ffffff" />
     <hemisphereLight args={['#f8fbfc', '#17242c', mobile ? 0.62 : 0.78]} />
-    <directionalLight position={[4, 8, 6]} intensity={mobile ? 1.6 : 2.5} color="#fff1dc" castShadow={!mobile && quality === 'high'} shadow-mapSize-width={mobile || quality === 'low' ? 0 : 1536} shadow-mapSize-height={mobile || quality === 'low' ? 0 : 1536} shadow-bias={-0.0003} />
-    <spotLight position={[-4, 5, 4]} intensity={mobile ? 1.8 : 3.4} distance={14} angle={0.55} penumbra={0.8} color="#38bdf8" />
-    <pointLight position={[2.5, 1.5, 4]} intensity={mobile ? 1.6 : 3.2} distance={8} color="#f59e0b" />
+    <directionalLight position={[4, 8, 6]} intensity={mobile ? 1.55 : 2.4} color="#fff1dc" castShadow={!mobile && quality === 'high'} shadow-mapSize-width={mobile || quality === 'low' ? 0 : 1536} shadow-mapSize-height={mobile || quality === 'low' ? 0 : 1536} shadow-bias={-0.0003} />
+    <directionalLight position={[-5, 3, -2]} intensity={mobile ? 0.45 : 0.72} color="#d9f5ff" />
+    <spotLight position={[-4, 5, 4]} intensity={mobile ? 1.55 : 3.1} distance={14} angle={0.55} penumbra={0.8} color="#38bdf8" />
+    <pointLight position={[2.5, 1.5, 4]} intensity={mobile ? 1.5 : 3.0} distance={8} color="#f59e0b" />
     <group ref={float}>
       <CNCAssembly mobile={mobile} reducedMotion={reducedMotion} quality={quality} />
     </group>
@@ -214,7 +226,7 @@ export default function IndustrialScene() {
   }, []);
   const sceneKey = `${mobile ? 'mobile' : 'desktop'}-${quality}`;
   return <div className="industrial-scene-canvas" aria-hidden="true">
-    <Canvas key={sceneKey} dpr={mobile ? 1.05 : quality === 'high' ? [1, 1.6] : 1.0} camera={{ position: [0, 0.2, mobile ? 8.9 : quality === 'high' ? 7.8 : 8.4], fov: mobile ? 42 : 48, near: 0.1, far: 40 }} shadows={!mobile && quality === 'high' ? 'soft' : false} gl={{ antialias: !mobile && quality === 'high', alpha: true, powerPreference: 'high-performance' }} onCreated={({ gl }) => { gl.outputColorSpace = SRGBColorSpace; gl.toneMapping = ACESFilmicToneMapping; gl.toneMappingExposure = 1.05; }}>
+    <Canvas key={sceneKey} dpr={mobile ? 1 : quality === 'high' ? [1, 1.5] : 1} camera={{ position: [0, 0.2, mobile ? 8.9 : quality === 'high' ? 7.8 : 8.4], fov: mobile ? 42 : 48, near: 0.1, far: 40 }} shadows={!mobile && quality === 'high' ? 'soft' : false} gl={{ antialias: !mobile && quality === 'high', alpha: true, powerPreference: 'high-performance' }} onCreated={({ gl }) => { gl.outputColorSpace = SRGBColorSpace; gl.toneMapping = ACESFilmicToneMapping; gl.toneMappingExposure = 1.05; }}>
       <SceneContent mobile={mobile} reducedMotion={reducedMotion} quality={quality} />
     </Canvas>
   </div>;
