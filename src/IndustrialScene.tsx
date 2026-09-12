@@ -116,7 +116,7 @@ function CNCAssembly({ mobile, reducedMotion, quality }: { mobile: boolean; redu
     const pointerY = MathUtils.lerp(0, -pointer.y, mobile ? 0.18 : 0.35);
     group.current.rotation.y = MathUtils.lerp(group.current.rotation.y, pointerX * 0.13, 0.04);
     group.current.rotation.x = MathUtils.lerp(group.current.rotation.x, pointerY * 0.045, 0.04);
-    group.current.rotation.z = MathUtils.lerp(group.current.rotation.z, scrollProgress * 0.06, 0.03);
+    group.current.rotation.z = MathUtils.lerp(group.current.rotation.z, scrollProgress * Math.PI * 2, 0.03);
     group.current.position.y = Math.sin(clock.elapsedTime * 0.75) * (quality === 'low' ? 0.015 : 0.025);
     carriage.current.position.x = Math.sin(clock.elapsedTime * 0.55) * (quality === 'low' ? 0.18 : 0.35);
   });
