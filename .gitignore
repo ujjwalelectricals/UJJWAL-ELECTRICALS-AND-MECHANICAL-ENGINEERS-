@@ -11,6 +11,10 @@ dist
 dist-ssr
 *.local
 
+# 3D optimizer safety outputs
+*.glb.backup
+public/models-optimized/
+
 .vscode/*
 !.vscode/extensions.json
 .idea
