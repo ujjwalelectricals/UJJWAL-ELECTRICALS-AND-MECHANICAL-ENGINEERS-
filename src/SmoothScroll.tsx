@@ -36,13 +36,6 @@ export function useScrollProgress() {
 }
 
 export default function SmoothScroll({ children }: SmoothScrollProps) {
-  const progress = useScrollProgress();
-
-  useEffect(() => {
-    const root = document.documentElement;
-    root.style.setProperty('--scroll-progress', String(progress));
-  }, [progress]);
-
   useEffect(() => {
     const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
     if (media?.matches) return;
@@ -58,6 +51,7 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     const onScroll = (event: { scroll: number; progress: number }) => {
       document.documentElement.style.setProperty('--lenis-scroll', `${event.scroll}px`);
       document.documentElement.style.setProperty('--lenis-progress', String(event.progress));
+      document.documentElement.style.setProperty('--scroll-progress', String(event.progress));
     };
 
     lenis.on('scroll', onScroll);
