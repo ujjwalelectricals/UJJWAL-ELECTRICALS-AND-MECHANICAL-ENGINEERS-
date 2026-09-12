@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "audit:assets": "node scripts/audit-assets.mjs",
+    "assets:optimize": "node scripts/optimize-3d-assets.mjs",
+    "assets:optimize:in-place": "node scripts/optimize-3d-assets.mjs --in-place",
     "build": "npm run audit:assets && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
