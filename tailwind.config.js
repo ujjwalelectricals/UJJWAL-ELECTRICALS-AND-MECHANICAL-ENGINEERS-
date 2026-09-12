@@ -24,6 +24,18 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Space Grotesk', 'Inter', 'sans-serif'],
       },
+      boxShadow: {
+        'industrial-panel': '0 24px 60px rgba(15, 23, 42, 0.10), inset 0 1px 0 rgba(255,255,255,0.72)',
+        'industrial-focus': '0 0 0 3px rgba(14,165,233,0.16), 0 12px 30px rgba(15,23,42,0.10)',
+      },
+      backgroundImage: {
+        'industrial-metal-ring': 'radial-gradient(circle at 50% 50%, transparent 57%, rgba(148,163,184,0.22) 58%, rgba(255,255,255,0.80) 61%, transparent 64%)',
+        'industrial-panel-glow': 'radial-gradient(circle at var(--panel-x, 50%) var(--panel-y, 0%), rgba(14,165,233,0.12), transparent 42%)',
+      },
+      backdropBlur: {
+        'industrial': '18px',
+        'industrial-deep': '28px',
+      },
       keyframes: {
         'fade-up': {
           '0%': { opacity: '0', transform: 'translateY(24px)' },
