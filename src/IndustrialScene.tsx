@@ -34,17 +34,18 @@ function useAdaptiveQuality(mobile: boolean) {
     const tick = (now: number) => {
       const frameMs = now - last;
       last = now;
-      if (frameMs > 18.2) {
+      // ~55 FPS budget: 18.18ms/frame. A short sustained dip lowers quality.
+      if (frameMs > 18.18) {
         slowFrames += 1;
         recoveryFrames = 0;
       } else {
         recoveryFrames += 1;
         slowFrames = Math.max(0, slowFrames - 1);
       }
-      if (slowFrames >= 45) {
+      if (slowFrames >= 20) {
         setTier('low');
         slowFrames = 0;
-      } else if (recoveryFrames >= 180) {
+      } else if (recoveryFrames >= 240) {
         setTier('high');
         recoveryFrames = 0;
       }
