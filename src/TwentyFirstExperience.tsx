@@ -4,16 +4,16 @@ type Stat = { value: number; suffix: string; label: string };
 
 const stats: Stat[] = [
   { value: 6, suffix: '+', label: 'CORE SERVICES' },
-  { value: 5, suffix: '', label: 'MACHINE BRANDS' },
+  { value: 5, suffix: '', label: 'MACHINE REFERENCES' },
   { value: 27, suffix: '+', label: 'CATALOG CATEGORIES' },
-  { value: 24, suffix: '/7', label: 'ENQUIRY READY' },
+  { value: 1, suffix: '', label: 'DIRECT RFQ PATH' },
 ];
 
 const cards = [
-  { code: '01', title: 'Industrial intelligence', copy: 'Useful tools, precise catalogue search and practical engineering context—presented as one connected workflow.' },
-  { code: '02', title: 'Precision commerce', copy: 'Find a bearing or tooling family, compare options, build a cart and send a clean enquiry without friction.' },
-  { code: '03', title: 'Machine-first service', copy: 'CNC, VMC, electrical and mechanical support organized around how industrial teams actually work.' },
-  { code: '04', title: 'Built for motion', copy: 'Interactive visual cues and subtle depth make the experience feel engineered, not decorated.' },
+  { code: 'SYSTEM', title: 'Industrial intelligence', copy: 'Product discovery, engineering context and practical tools brought together without visual noise.', href: '#home' },
+  { code: 'COMMERCE', title: 'Precision commerce', copy: 'Find a bearing or tooling family, build a list and move directly into a quotation conversation.', href: '#shop' },
+  { code: 'SERVICE', title: 'Machine-first service', copy: 'CNC, VMC, electrical and mechanical support organized around real operating requirements.', href: '#services' },
+  { code: 'MOTION', title: 'Purposeful interaction', copy: 'Depth, hover response and subtle motion are used where they improve orientation or understanding.', href: '#home' },
 ];
 
 function useCountUp(trigger: boolean) {
@@ -86,10 +86,10 @@ export default function TwentyFirstExperience() {
       <div className="twentyfirst-progress" aria-hidden="true"><span /></div>
       <div className="twentyfirst-head">
         <div>
-          <span className="section-code">07 / INTERACTIVE SYSTEM</span>
+          <span className="section-code">07 / EXPERIENCE LAYER</span>
           <h2>Engineering, <em>with depth.</em></h2>
         </div>
-        <p>Purposeful motion, spotlight surfaces, bento layouts and crisp micro-interactions—adapted to an industrial engineering brand.</p>
+        <p>One visual language for engineering, commerce and service—quiet enough to keep the information in charge.</p>
       </div>
       <div className="twentyfirst-bento">
         {cards.map((card, index) => (
@@ -98,7 +98,7 @@ export default function TwentyFirstExperience() {
             <div className="twentyfirst-card-glow" aria-hidden="true" />
             <h3>{card.title}</h3>
             <p>{card.copy}</p>
-            <a href={index === 1 ? '#shop' : index === 2 ? '#services' : '#home'}>Explore <b>↗</b></a>
+            <a href={card.href}>Explore <b>↗</b></a>
           </article>
         ))}
       </div>
@@ -112,15 +112,15 @@ export default function TwentyFirstExperience() {
       </div>
       <div className="twentyfirst-marquee" aria-hidden="true">
         <div className="twentyfirst-marquee-track">
-          <span>PRECISION</span><i>•</i><span>CNC / VMC</span><i>•</i><span>BEARINGS</span><i>•</i><span>TOOLING</span><i>•</i><span>ENGINEERING</span><i>•</i>
-          <span>PRECISION</span><i>•</i><span>CNC / VMC</span><i>•</i><span>BEARINGS</span><i>•</i><span>TOOLING</span><i>•</i><span>ENGINEERING</span><i>•</i>
+          <span>PRECISION</span><i>/</i><span>CNC / VMC</span><i>/</i><span>BEARINGS</span><i>/</i><span>TOOLING</span><i>/</i><span>ENGINEERING</span><i>/</i>
+          <span>PRECISION</span><i>/</i><span>CNC / VMC</span><i>/</i><span>BEARINGS</span><i>/</i><span>TOOLING</span><i>/</i><span>ENGINEERING</span><i>/</i>
         </div>
       </div>
       <div className="twentyfirst-cta">
         <div>
-          <span className="section-code">READY WHEN YOU ARE</span>
-          <h3>Bring the next machine problem.</h3>
-          <p>Find a component, review the service scope, or start an enquiry in one motion.</p>
+          <span className="section-code">READY TO QUOTE</span>
+          <h3>Bring the next machine requirement.</h3>
+          <p>Find a component, review the service scope, or move directly into an enquiry.</p>
         </div>
         <div className="twentyfirst-cta-actions">
           <a className="twentyfirst-shimmer" href="#shop">Open the shop <b>→</b></a>
