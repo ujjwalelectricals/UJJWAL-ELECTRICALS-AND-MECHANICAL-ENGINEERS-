@@ -3,6 +3,7 @@ import { FormEvent, useMemo, useState } from 'react';
 const EMAIL = 'ujjwalelectricalengineers@gmail.com';
 const PHONE = '+91 99712 76078';
 const PHONE_2 = '+91 99102 28978';
+const WHATSAPP = '919971276078';
 
 export default function SiteEnhancements() {
   const [sent, setSent] = useState(false);
@@ -21,6 +22,8 @@ export default function SiteEnhancements() {
     window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSent(true);
   };
+
+  const whatsappHref = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent('Hello Ujjwal Electrical and Mechanical Engineers Enterprise, I would like to discuss an industrial requirement.')}`;
 
   return (
     <>
@@ -51,15 +54,34 @@ export default function SiteEnhancements() {
         </div>
       </section>
 
+      <section className="procurement-desk" aria-label="Procurement desk">
+        <div className="procurement-copy">
+          <span className="section-code">08 / PROCUREMENT DESK</span>
+          <h2>Make the next step <em>easy to buy.</em></h2>
+          <p>Share the machine requirement, part list or service need. The site keeps the path simple: identify the requirement, send one enquiry and confirm availability, pricing and delivery directly.</p>
+          <div className="procurement-actions">
+            <a href={whatsappHref} target="_blank" rel="noreferrer">WHATSAPP RFQ ↗</a>
+            <a href="#shop">OPEN CATALOG →</a>
+          </div>
+        </div>
+        <div className="procurement-facts">
+          <div><span>GSTIN</span><strong>09CWDPD3387A1ZS</strong></div>
+          <div><span>IEC</span><strong>CWDPD3387A</strong></div>
+          <div><span>LOCATION</span><strong>GHAZIABAD / INDIA</strong></div>
+          <div><span>DIRECT</span><strong>PHONE + EMAIL</strong></div>
+        </div>
+      </section>
+
       <section className="premium-contact-block" id="premium-contact">
         <div className="contact-intro">
-          <span className="section-code">08 / START A CONVERSATION</span>
+          <span className="section-code">09 / START A CONVERSATION</span>
           <h2>Have a machine, <em>part or problem?</em></h2>
           <p>Send the requirement. We will reply directly and confirm availability, pricing and the best next step.</p>
           <div className="contact-links">
             <a href={`tel:${PHONE.replace(/\s/g, '')}`}>{PHONE}</a>
             <a href={`tel:${PHONE_2.replace(/\s/g, '')}`}>{PHONE_2}</a>
             <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            <a href={whatsappHref} target="_blank" rel="noreferrer">WHATSAPP ↗</a>
           </div>
         </div>
         <form className="premium-contact-form" onSubmit={submitEnquiry}>
