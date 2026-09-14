@@ -58,15 +58,46 @@ export function applySeo({ page, product = null }: SeoOptions) {
     : pageMeta.description);
   setMeta('robots', 'index,follow,max-image-preview:large');
 
-  setJsonLd('ue-page-schema', {
+  const pageSchema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': page === 'shop' ? 'CollectionPage' : 'WebPage',
     name: product ? product.name : pageMeta.title,
     description: product ? `${product.brand} ${product.name} — ${product.category}` : pageMeta.description,
     url: product ? `${BASE}#shop/${encodeURIComponent(product.id)}` : `${BASE}#${page}`,
     isPartOf: { '@type': 'WebSite', name: COMPANY, url: BASE },
-    about: page === 'services' ? { '@type': 'Thing', name: 'Industrial engineering services' } : undefined,
-  });
+  };
+
+  if (page === 'services') {
+    const serviceNames = [
+      'CNC Service & Maintenance',
+      'Industrial Electrical',
+      'Mechanical Engineering',
+      'Plant Installation',
+      'Spindle & Tooling Support',
+      'Breakdown Response',
+    ];
+    pageSchema.mainEntity = serviceNames.map((name) => ({
+      '@type': 'Service',
+      name,
+      provider: { '@type': 'Organization', name: COMPANY },
+    }));
+  }
+
+  if (page === 'shop') {
+    const categories = ['BALL BEARINGS','BT40 HOLDERS','ISO40 HOLDERS','SK40 HOLDERS','BBT40 HOLDERS','BT30 HOLDERS','HSK HOLDERS','ER COLLETS','PULL STUDS','BORING HEADS','COLLET CHUCKS'];
+    pageSchema.mainEntity = {
+      '@type': 'ItemList',
+      numberOfItems: categories.length,
+      itemListElement: categories.map((name, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name,
+      })),
+    };
+  }
+
+  if (page === 'shop' && product) pageSchema.about = { '@type': 'Product', name: product.name, sku: product.id, category: product.category };
+  setJsonLd('ue-page-schema', pageSchema);
 
   if (product) {
     setJsonLd('ue-product-schema', {
@@ -86,7 +117,6 @@ export function applySeo({ page, product = null }: SeoOptions) {
       } : undefined,
     });
   } else {
-    const productSchema = document.getElementById('ue-product-schema');
-    productSchema?.remove();
+    document.getElementById('ue-product-schema')?.remove();
   }
 }
