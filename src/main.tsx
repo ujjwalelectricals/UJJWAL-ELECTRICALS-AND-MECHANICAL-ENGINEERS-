@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { trackEvent } from './analytics';
+import { installPerformanceObservers } from './performance';
 import './styles.css';
 import './animations.css';
 import './showcase.css';
@@ -14,7 +15,7 @@ function trackInteraction(actionable: HTMLElement): void {
   const label = (actionable.textContent || '').trim().toLowerCase();
   if (/^tel:/i.test(href)) trackEvent('phone_click', {surface: 'site'});
   if (/^mailto:/i.test(href)) trackEvent('email_click', {surface: 'site'});
-  if (/wa\.me\//i.test(href) || label.includes('whatsapp')) trackEvent('whatsapp_click', {surface: 'site'});
+  if (/wa\\.me\\//i.test(href) || label.includes('whatsapp')) trackEvent('whatsapp_click', {surface: 'site'});
   if (label.includes('enquir')) trackEvent('enquiry_click', {surface: 'site'});
 }
 
@@ -30,6 +31,8 @@ document.addEventListener('click',(event)=>{
   event.stopPropagation();
   window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(enquiryMessage)}`,'_blank','noopener,noreferrer');
 },true);
+
+installPerformanceObservers();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
