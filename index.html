@@ -8,6 +8,7 @@
     <meta name="description" content="UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE — CNC service, VMC tooling, industrial electrical and mechanical engineering, bearings and machine-shop components in Ghaziabad, India." />
     <meta name="keywords" content="CNC service Ghaziabad, VMC tooling, BT40 holders, ISO40 holders, ER collets, ball bearings, industrial electrical engineering, mechanical engineering, machine tools" />
     <meta name="author" content="UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE" />
+    <meta name="google-site-verification" content="__GSC_VERIFICATION__" />
     <meta property="og:title" content="UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE" />
     <meta property="og:description" content="CNC service, VMC tooling, bearings and industrial engineering support in Ghaziabad." />
     <meta property="og:type" content="website" />
@@ -15,6 +16,7 @@
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="icon" type="image/svg+xml" href="/ue-mark.svg" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
     <title>UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE | CNC, VMC, Bearings & Industrial Engineering</title>
     <script type="application/ld+json">
       {
@@ -23,7 +25,7 @@
         "name": "UJJWAL ELECTRICAL AND MECHANICAL ENGINEERS ENTERPRISE",
         "description": "CNC service, VMC tooling, bearings and industrial electrical and mechanical engineering support.",
         "telephone": ["+91-9971276078", "+91-9910228978"],
-        "email": "ujjwalelectricalengineers@gmail.com",
+        "email": "ujwalelectricalengineers@gmail.com",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Sector-9, H.No. 2313, Block-51, Siddharth Vihar",
@@ -36,10 +38,11 @@
     </script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      window.UE_ANALYTICS_ID = '';
+      window.UE_ANALYTICS_ID = '__GA4_ID__';
       window.UE_COOKIE_CONSENT = localStorage.getItem('ue-analytics-consent') === 'granted';
+      function validAnalyticsId(){ return /^G-[A-Z0-9]+$/i.test(window.UE_ANALYTICS_ID || ''); }
       function loadAnalytics(){
-        if(!window.UE_ANALYTICS_ID || !window.UE_COOKIE_CONSENT) return;
+        if(!validAnalyticsId() || !window.UE_COOKIE_CONSENT) return;
         if(document.getElementById('ue-analytics')) return;
         const s=document.createElement('script'); s.id='ue-analytics'; s.async=true;
         s.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(window.UE_ANALYTICS_ID);
@@ -47,7 +50,7 @@
         gtag('js',new Date()); gtag('config',window.UE_ANALYTICS_ID,{anonymize_ip:true});
       }
       function analyticsBanner(){
-        if(!window.UE_ANALYTICS_ID || window.UE_COOKIE_CONSENT || localStorage.getItem('ue-analytics-consent')) return;
+        if(!validAnalyticsId() || window.UE_COOKIE_CONSENT || localStorage.getItem('ue-analytics-consent')) return;
         const bar=document.createElement('aside'); bar.setAttribute('role','dialog'); bar.setAttribute('aria-label','Analytics consent');
         bar.style.cssText='position:fixed;left:18px;right:18px;bottom:18px;z-index:9999;background:#12181b;color:#fff;padding:16px 18px;border-radius:16px;box-shadow:0 18px 55px rgba(0,0,0,.22);font:13px/1.5 Segoe UI,sans-serif;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap';
         bar.innerHTML='<span>We use optional analytics to understand site traffic. No analytics loads unless you consent.</span><span style="display:flex;gap:8px"><button id="ue-deny" style="padding:9px 12px;border:1px solid #59656b;background:transparent;color:#fff;border-radius:9px;cursor:pointer">Decline</button><button id="ue-accept" style="padding:9px 12px;border:0;background:#c88708;color:#fff;border-radius:9px;cursor:pointer">Allow analytics</button></span>';
