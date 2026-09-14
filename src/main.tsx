@@ -15,7 +15,7 @@ function trackInteraction(actionable: HTMLElement): void {
   const label = (actionable.textContent || '').trim().toLowerCase();
   if (/^tel:/i.test(href)) trackEvent('phone_click', {surface: 'site'});
   if (/^mailto:/i.test(href)) trackEvent('email_click', {surface: 'site'});
-  if (/wa\\.me\\//i.test(href) || label.includes('whatsapp')) trackEvent('whatsapp_click', {surface: 'site'});
+  if (/wa\.me\//i.test(href) || label.includes('whatsapp')) trackEvent('whatsapp_click', {surface: 'site'});
   if (label.includes('enquir')) trackEvent('enquiry_click', {surface: 'site'});
 }
 
