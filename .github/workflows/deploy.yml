@@ -16,6 +16,10 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+env:
+  VITE_GA4_ID: ${{ vars.VITE_GA4_ID }}
+  VITE_GSC_VERIFICATION: ${{ vars.VITE_GSC_VERIFICATION }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,13 +32,25 @@ jobs:
           node-version: 20
           cache: npm
       - name: Install dependencies
-        run: npm ci --no-audit --no-fund
+        run: npm install --no-audit --no-fund
       - name: Dependency security audit
         run: npm audit --audit-level=high
       - name: Type check
         run: npm run typecheck
+      - name: Configure Google integrations
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'index.html';
+          let html = fs.readFileSync(path, 'utf8');
+          html = html.replaceAll('__GA4_ID__', process.env.VITE_GA4_ID || '');
+          html = html.replaceAll('__GSC_VERIFICATION__', process.env.VITE_GSC_VERIFICATION || '');
+          fs.writeFileSync(path, html);
+          NODE
       - name: Build
         run: npm run build
+      - name: Prepare SPA fallback
+        run: cp dist/index.html dist/404.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
@@ -55,3 +71,18 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Core Web Vitals / Lighthouse audit
+        continue-on-error: true
+        run: |
+          npx --yes lighthouse "${{ steps.deployment.outputs.page_url }}" \
+            --quiet \
+            --chrome-flags="--headless --no-sandbox" \
+            --output=json \
+            --output-path=./lighthouse-report.json
+      - name: Upload Lighthouse report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-core-web-vitals
+          path: ./lighthouse-report.json
+          if-no-files-found: warn
+          retention-days: 14
